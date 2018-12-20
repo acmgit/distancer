@@ -1,6 +1,6 @@
 local distancer = {}
 
-distancer.version = 1
+distancer.version = 2
 distancer.revision = 0
 distancer.modname = "Distancer"
 
@@ -21,6 +21,13 @@ distancer.grey = minetest.get_color_escape_sequence('#888888')
 distancer.light_blue = minetest.get_color_escape_sequence('#8888FF')
 distancer.light_green = minetest.get_color_escape_sequence('#88FF88')
 distancer.light_red = minetest.get_color_escape_sequence('#FF8888')
+
+-- Hud of the Distancer
+distancer.hud_x = 0.9
+distancer.hud_y = 0.5
+distancer.hud_mapblock = nil
+distancer.hud_marker = nil
+distancer.hud_position = nil
 
 --[[
    ****************************************************************
@@ -79,6 +86,30 @@ function distancer.convert_position(pos)
     
     return nil
 end -- function convert_position
+    
+function distancer.get_mapblock()
+
+    local pos_string = nil
+    
+    local mypos = distancer.you:get_pos()
+    local x = math.floor(mypos.x+0.5)
+    local y = math.floor(mypos.y+0.5)
+    local z = math.floor(mypos.z+0.5)
+    
+    local pos_string = math.floor(x / 16) .. "." .. math.floor(y / 16) .. "." .. math.floor(z / 16)
+
+    return pos_string
+    
+end
+
+function distancer.update_hud()
+    if(distancer.hud_mapblock ~= nil) then
+        distancer.you:hud_change(distancer.hud_mapblock, "text", distancer.get_mapblock())
+        
+    end -- if(distancer.hud_mapblock ~= nil
+        
+end -- distancer.update_hud
+
 --[[
    ****************************************************************
    *******        Main for Prospector                        ******
@@ -86,11 +117,47 @@ end -- function convert_position
 --]]
 
 -- Get yourself
-minetest.register_on_connect(function()
-    distancer.you = minetest.localplayer               
+distancer.you = minetest.localplayer               
+
+-- Add the HUD
+local idx = 0
+distancer.you:hud_add(
+{
+    name = "Mapblock",    -- default ""
+    hud_elem_type = "text",
+    number = 0x00FF00, -- Color of the Text
+    text = "Current Mapblock",
+    position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+    direction = 1
+ 
+}) -- distancer.you:hud_add
+
+idx = idx + .02
+distancer.hud_mapblock = distancer.you:hud_add(
+{
+    name = "MB Value",    -- default ""
+    hud_elem_type = "text",
+    number = 0xFF6700, -- Color of the Text
+    text = "(0.0.0)",
+    position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+    direction = 1
+    
+}) -- distancer.you:hud_add
+
+minetest.register_globalstep(function(dtime) 
+    distancer.update_hud()
+                            
 end)
 
-
+--[[                      
+    text = "Current Mapblock",
+    number = 0xFF6700,
+    text = distancer.orange .. distancer.get_mapblock(),    -- default ""
+    direction = 1
+--    size = { x=100, y=100 },  -- default {x=0, y=0}
+    --  ^ Size of element in pixels
+]]--
+                      
 --[[
    ****************************************************************
    *******        Registered Chatcommands                    ******
@@ -111,7 +178,7 @@ minetest.register_chatcommand("who_is_online", {
         else
             table.sort(online)
     
-        end
+        end -- if(online == nil
                                             
         distancer.print(distancer.green .. "Player now online:\n")
                                         
@@ -128,15 +195,16 @@ minetest.register_chatcommand("show_mapblock",{
     params = "<>",
     description = "Shows the current Mapblock, where you are.",
     func = function()
+        local pos_string = distancer.get_mapblock()
+        if(pos_string ~= nil) then
+            distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string .. distancer.green .. ")\n")
         
-        local mypos = distancer.you:get_pos()
-        local x = math.floor(mypos.x+0.5)
-        local y = math.floor(mypos.y+0.5)
-        local z = math.floor(mypos.z+0.5)
-    
-        local pos_string = math.floor(x / 16) .. "." .. math.floor(y / 16) .. "." .. math.floor(z / 16)
-        
-        distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string .. distancer.green .. ")\n")
+        else
+            distancer.print(distancer.red .. "Couldn't calculate the Mapblocknr.")
+                                               
+        end -- if(pos_string ~= nil
+                                               
+                                               
     end -- function
                                               
 }) -- chatcommand show_mapblock
@@ -231,7 +299,7 @@ minetest.register_chatcommand("distancer_version",{
     description = "Shows the current Revision of ".. distancer.modname .. ".",
     func = function ()
         
-        distancer.print(distancer.green .. "Client-Side-Mod: " .. distancer.modname .. distancer.orange .. "v " .. distancer.version .. "." .. distancer.revision .. "\n")
+        distancer.print(distancer.green .. "Client-Side-Mod: " .. distancer.modname .. distancer.orange .. " v " .. distancer.version .. "." .. distancer.revision .. "\n")
         
     end -- function
 
