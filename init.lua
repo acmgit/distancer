@@ -22,12 +22,17 @@ distancer.light_blue = minetest.get_color_escape_sequence('#8888FF')
 distancer.light_green = minetest.get_color_escape_sequence('#88FF88')
 distancer.light_red = minetest.get_color_escape_sequence('#FF8888')
 
--- Hud of the Distancer
+-- Position of the Hud
 distancer.hud_x = 0.9
-distancer.hud_y = 0.5
+distancer.hud_y = 0.7
+
+-- Values on the Hud
+distancer.hud_mapblock_label = nil
 distancer.hud_mapblock = nil
+distancer.hud_distance_label = nil
 distancer.hud_marker = nil
 distancer.hud_position = nil
+distancer.hud_distance = nil
 
 --[[
    ****************************************************************
@@ -103,13 +108,131 @@ function distancer.get_mapblock()
 end
 
 function distancer.update_hud()
-    if(distancer.hud_mapblock ~= nil) then
-        distancer.you:hud_change(distancer.hud_mapblock, "text", distancer.get_mapblock())
+
+    if(distancer.hud_mapblock ~= false) then
+       
+        if(distancer.hud_mapblock ~= nil) then
+            distancer.you:hud_change(distancer.hud_mapblock, "text", distancer.get_mapblock())
         
-    end -- if(distancer.hud_mapblock ~= nil
+        end -- if(distancer.hud_mapblock ~= nil
+      
+    end -- if(distancer_hud_mapblock 
+      
+    if(distancer.hud_marker ~= nil and distancer.hud_position ~= nil and distancer.hud_distance ~= nil) then
+        local current_position = distancer.you:get_pos()
+        current_position = distancer.convert_position(current_position)        
+        distancer.you:hud_change(distancer.hud_position, "text", minetest.pos_to_string(current_position))
+
+        if(distancer.marker ~= nil) then
+            distancer.you:hud_change(distancer.hud_marker, "text", minetest.pos_to_string(distancer.marker))
+            distancer.you:hud_change(distancer.hud_distance, "text", minetest.pos_to_string(distancer.calc_distance_pos(distancer.marker, current_position)))
         
+        end -- if(distancer.hud_marker ~= nil
+    
+    end -- if(hud_marker and hud_position and hud_distance
+
 end -- distancer.update_hud
 
+function distancer.add_hud_mapblock()
+
+    local idx = 0 -- Starting Hud
+    distancer.hud_mapblock_label = distancer.you:hud_add(
+    {
+        name = "Mapblock",    -- default ""
+        hud_elem_type = "text",
+        number = 0x00FF00, -- Color of the Text
+        text = "Current Mapblock",
+        position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+        direction = 1
+ 
+    }) -- distancer.you:hud_add
+
+    idx = idx + .02 -- Next Hud-Element
+    distancer.hud_mapblock = distancer.you:hud_add(
+    {
+        name = "Mapblock_Value",    -- default ""
+        hud_elem_type = "text",
+        number = 0xFF6700, -- Color of the Text
+        text = "(0.0.0)",
+        position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+        direction = 1
+    
+    }) -- distancer.you:hud_add
+
+end -- function add_hud_mapblock()
+
+function distancer.add_hud_measure()
+    
+    local idx = .04
+    distancer.hud_distance_label = distancer.you:hud_add(
+    {
+        name = "Mesure",    -- default ""
+        hud_elem_type = "text",
+        number = 0x00FF00, -- Color of the Text
+        text = "Marker - Position - Distance",
+        position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+        direction = 1
+    
+    }) -- distancer.you:hud_add
+
+    idx = idx + .02
+    distancer.hud_marker = distancer.you:hud_add(
+    {
+        name = "Marker_Value",    -- default ""
+        hud_elem_type = "text",
+        number = 0xFF6700, -- Color of the Text
+        text = "(0.0.0)",
+        position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+        direction = 1
+    
+    }) -- distancer.you:hud_add
+
+    idx = idx + .02
+    distancer.hud_position = distancer.you:hud_add(
+    {
+        name = "Position_Value",    -- default ""
+        hud_elem_type = "text",
+        number = 0xFFFF00, -- Color of the Text
+        text = "(0.0.0)",
+        position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+        direction = 1
+    
+    }) -- distancer.you:hud_add
+
+    idx = idx + .02
+    distancer.hud_distance = distancer.you:hud_add(
+    {
+        name = "Distance_Value",    -- default ""
+        hud_elem_type = "text",
+        number = 0xFFFFFF, -- Color of the Text
+        text = "(0.0.0)",
+        position = {x = distancer.hud_x, y = distancer.hud_y+idx},
+        direction = 1
+    
+    }) -- distancer.you:hud_add
+      
+end -- distancer.add_hud_mesure()
+
+function distancer.remove_hud_mapblock()
+    distancer.you:hud_remove(distancer.hud_mapblock_label)
+    distancer.you:hud_remove(distancer.hud_mapblock)
+    distancer.hud_mapblock_label = nil
+    distancer.hud_mapblock = nil
+    
+end -- function distancer.remove_hud_mapblock
+
+function distancer.remove_hud_measure()
+    distancer.you:hud_remove(distancer.hud_distance_label)
+    distancer.you:hud_remove(distancer.hud_marker)
+    distancer.you:hud_remove(distancer.hud_position)
+    distancer.you:hud_remove(distancer.hud_distance)
+    distancer.hud_distance_label = nil
+    distancer.hud_marker = nil
+    distancer.hud_position = nil
+    distancer.hud_distance = nil
+    
+end -- function distander.remove_hud_measure
+    
 --[[
    ****************************************************************
    *******        Main for Prospector                        ******
@@ -119,45 +242,11 @@ end -- distancer.update_hud
 -- Get yourself
 distancer.you = minetest.localplayer               
 
--- Add the HUD
-local idx = 0
-distancer.you:hud_add(
-{
-    name = "Mapblock",    -- default ""
-    hud_elem_type = "text",
-    number = 0x00FF00, -- Color of the Text
-    text = "Current Mapblock",
-    position = {x = distancer.hud_x, y = distancer.hud_y+idx},
-    direction = 1
- 
-}) -- distancer.you:hud_add
-
-idx = idx + .02
-distancer.hud_mapblock = distancer.you:hud_add(
-{
-    name = "MB Value",    -- default ""
-    hud_elem_type = "text",
-    number = 0xFF6700, -- Color of the Text
-    text = "(0.0.0)",
-    position = {x = distancer.hud_x, y = distancer.hud_y+idx},
-    direction = 1
-    
-}) -- distancer.you:hud_add
-
 minetest.register_globalstep(function(dtime) 
     distancer.update_hud()
                             
-end)
+end) -- minetest.register_globalstep
 
---[[                      
-    text = "Current Mapblock",
-    number = 0xFF6700,
-    text = distancer.orange .. distancer.get_mapblock(),    -- default ""
-    direction = 1
---    size = { x=100, y=100 },  -- default {x=0, y=0}
-    --  ^ Size of element in pixels
-]]--
-                      
 --[[
    ****************************************************************
    *******        Registered Chatcommands                    ******
@@ -195,6 +284,7 @@ minetest.register_chatcommand("show_mapblock",{
     params = "<>",
     description = "Shows the current Mapblock, where you are.",
     func = function()
+                                              
         local pos_string = distancer.get_mapblock()
         if(pos_string ~= nil) then
             distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string .. distancer.green .. ")\n")
@@ -209,6 +299,86 @@ minetest.register_chatcommand("show_mapblock",{
                                               
 }) -- chatcommand show_mapblock
 
+
+minetest.register_chatcommand("distancer_hud_mapblock",{
+
+    params = "on|off",
+    description = "Turn's the HUD for the Mapblock on or off.",
+    func = function(param)
+                                                       
+        local parameter = param:lower()
+        if(parameter == "on") then
+            if(distancer.hud_mapblock_label == nil and distancer.hud_mapblock == nil) then
+                distancer.add_hud_mapblock()
+                                                       
+            else
+                distancer.print(distancer.orange .. "HUD for Mapblock already on.")
+                                                       
+            end -- if(distancer.hud_mapblock_label
+        
+        elseif(parameter == "off") then
+            if(distancer.hud_mapblock_label ~= nil and distancer.hud_mapblock ~= nil) then
+                distancer.remove_hud_mapblock()
+            
+            else
+                distancer.print(distancer.orange .. "HUD for Mapblock isn't on.")
+                                                       
+            end -- if(distancer.hud_mapblock_label
+        
+        else
+            distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_mapblock\n")
+            distancer.print(distancer.orange .. "Usage: .distancer_hud_mapblock on|off")
+                                                       
+        end -- if(parameter ==
+                                                       
+    end -- function(param
+                                                       
+}) -- chatcommand distancer_hud_mapblock
+
+minetest.register_chatcommand("distancer_hud_measure",{
+
+    params = "on|off",
+    description = "Turn's the HUD for the Distancemeasure on or off.",
+    func = function(param)
+                                                       
+        local parameter = param:lower()
+        if(parameter == "on") then
+            if(distancer.hud_distance_label == nil and 
+               distancer.hud_marker == nil and
+               distancer.hud_position == nil and
+               distancer.hud_distance == nil) 
+            then
+                distancer.add_hud_measure()
+                                                       
+            else
+                distancer.print(distancer.orange .. "HUD for Distancemeasure already on.")
+                                                       
+            end -- if(distancer.hud_mapblock_label
+        
+        elseif(parameter == "off") then
+            if(distancer.hud_distance_label ~= nil and 
+               distancer.hud_marker ~= nil and
+               distancer.hud_position ~= nil and
+               distancer.hud_distance ~= nil) 
+            then
+                distancer.remove_hud_measure()
+            
+            else
+                distancer.print(distancer.orange .. "HUD for Distancemeasure isn't on.")
+                                                       
+            end -- if(distancer.hud_mapblock_label
+        
+        else
+            distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_measure\n")
+            distancer.print(distancer.orange .. "Usage: .distancer_hud_measure on|off")
+                                                       
+        end -- if(parameter ==
+                                                       
+    end -- function(param
+                                                       
+}) -- chatcommand distancer_hud_mapblock
+
+    
 minetest.register_chatcommand("marker",{
 
     params = "<> | -s | -m | -p | -w X,Y,Z",
