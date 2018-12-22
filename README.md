@@ -18,8 +18,8 @@ Be carefull, this Version works only with Minetest Version 5.x.x.
 .distancer_hud_change <>       | Show's the current Position of the HUD in the Chat.
 .distancer_hud_change -r       | Reset's the Position of the HUD to default.
 .distancer_hud_change -w .x,.y | Changes the Position of the HUD on the Screen<br>
-.distancer_hud_speed <>        | Shows you the current Speed in Seconds the HUD will refresh.
-.distancer_hud_speed Number    | Set's the current Refreshspeed of the HUD to Number Seconds.
+.distancer_hud_speed <>        | Shows you the current Speed in Seconds the HUD will refresh.<br>
+.distancer_hud_speed Number    | Set's the current Refreshspeed of the HUD to Number Seconds.<br>
 
 ## Other Commands
 .distancer_show_mapblock | Shows you the Mapblocknumber of your current Position.<br>
