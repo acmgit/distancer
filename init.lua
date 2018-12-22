@@ -393,7 +393,7 @@ end) -- minetest.register_globalstep
    ****************************************************************
 --]]
 
-minetest.register_chatcommand("who_is_online", {
+minetest.register_chatcommand("distancer_who_is_online", {
 
     params = "<>",
     description = "Shows you all online Playernames.\nUsage:\n<> shows you all Playernames.\n",
@@ -419,7 +419,7 @@ minetest.register_chatcommand("who_is_online", {
                                             
 }) -- chatcommand who_is_online
 
-minetest.register_chatcommand("show_mapblock",{
+minetest.register_chatcommand("distancer_show_mapblock",{
 
     params = "<>",
     description = "Shows the current Mapblock, where you are.",
@@ -511,7 +511,7 @@ minetest.register_chatcommand("distancer_hud_measure",{
 }) -- chatcommand distancer_hud_mapblock
 
     
-minetest.register_chatcommand("marker",{
+minetest.register_chatcommand("distancer_marker",{
 
     params = "<> | -s | -m | -p | -w X,Y,Z",
     description = "\n<> shows you the stored Marker.\n-s - Set's the Marker to your current Position.\n-m - Shows the Distance from your Marker.\n-p - Shows the Distance from your Marker as Vector\n-w X,Y,Z - Set's the Marker to X,Y,Z",
