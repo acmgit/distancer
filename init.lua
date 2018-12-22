@@ -10,11 +10,12 @@
 local distancer = {}
 
 distancer.version = 2
-distancer.revision = 1
+distancer.revision = 2
 distancer.modname = "Distancer"
 
 distancer.you = nil -- Player
 distancer.marker = nil
+distancer.speed = .5 -- Update every distancer.speed seconds
 
 -- Colors for Chat
 distancer.green = minetest.get_color_escape_sequence('#00FF00')
@@ -152,6 +153,14 @@ function distancer.update_hud()
     
     end -- if(hud_marker and hud_position and hud_distance
 
+    if(distancer.speed > 0) then
+        minetest.after(distancer.speed, function()
+            distancer.update_hud()
+              
+        end) -- minetest.after(
+
+    end -- if(distancer.speed
+        
 end -- distancer.update_hud
 
 function distancer.add_hud_mapblock()
@@ -372,7 +381,21 @@ function distancer.hud_reset()
     end
 
 end -- function distancer.hud_reset
-    
+
+function distancer.hud_speed(speed)
+    if(speed >= 0 and speed ~= nil) then
+        distancer.speed = speed
+        distancer.update_hud()
+        distancer.print(distancer.green .. "Distancer-HUD will now update all " .. distancer.orange .. distancer.speed .. distancer.green .. " seconds.\n")
+
+    else
+        distancer.speed = 0
+        distancer.print(distancer.green .. "Distancer-HUD will now not updated.\n")
+
+    end -- if(speed >= 0
+
+end -- distancer.hud_speed(
+
 --[[
    ****************************************************************
    *******        Main for Distancer                         ******
@@ -382,10 +405,20 @@ end -- function distancer.hud_reset
 -- Get yourself
 distancer.you = minetest.localplayer               
 
+--[[
 minetest.register_globalstep(function(dtime) 
     distancer.update_hud()
-                            
-end) -- minetest.register_globalstep
+
+end)  -- minetest.register_globalstep
+]]--
+
+minetest.after(distancer.speed, function()
+    distancer.update_hud()
+              
+end) -- minetest.after(
+               
+
+
 
 --[[
    ****************************************************************
@@ -615,8 +648,8 @@ minetest.register_chatcommand("distancer_change_hud",{
         elseif(command[1] == "-w") then         -- Changes the Position
             local position = {}
             local x, y
-            x = tonumber(command[2] or 0)
-            y = tonumber(command[3] or 0)
+            x = tonumber(command[2]) or 0
+            y = tonumber(command[3]) or 0
             position.x = x
             position.y = y
             if(not distancer.change_hud_position(position)) then
@@ -632,7 +665,34 @@ minetest.register_chatcommand("distancer_change_hud",{
     end -- function
                                                               
 }) -- chatcommand distancer_change_hud
-    
+
+minetest.register_chatcommand("distancer_hud_speed",{
+    param = "<> | -s Seconds",
+    description = "\n<> shows you the current Updatespeed in Seconds of the HUD.\n-s Seconds set's the new Value in Seconds. 0 turns the HUD off.",
+    func = function(param)
+        local parameter = param:lower()
+        local command = {}
+                                                    
+        command = distancer.split(parameter)
+                                                    
+        if(command[1] == nil or command[1] == "") then
+            if(distancer.speed > 0) then
+                distancer.print(distancer.green .. "The HUD of Distancer will update every " .. distancer.orange .. distancer.speed .. distancer.green .. " Seconds.\n")
+                                                    
+            else
+                distancer.print(distancer.green .. "The HUD of Distancer is off.\n")
+                                                    
+            end -- if(distancer.speed
+        else
+            local newspeed = tonumber(command[1]) or 0
+            distancer.hud_speed(newspeed)
+                                                    
+        end -- if(command[1] ==
+                                                    
+    end -- function
+                                                    
+}) -- chatcommand distancer_hud_speed
+
 minetest.register_chatcommand("distancer_version",{
     
     params = "<>",
