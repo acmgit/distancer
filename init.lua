@@ -779,6 +779,7 @@ minetest.register_on_modchannel_signal(function(channelname, signal)
                                       
 end) -- minetest.register_on_modchannel_signal(
 
+
 minetest.register_on_modchannel_message(function(channelname, sender, message)
         distancer.handle_message(sender, message)
                                         
