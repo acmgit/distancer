@@ -10,8 +10,10 @@
 local distancer = {}
 
 distancer.version = 2
-distancer.revision = 2
+distancer.revision = 4
 distancer.modname = "Distancer"
+distancer.channelname = "distancer"
+distancer.channel = nil
 
 distancer.you = nil -- Player
 distancer.marker = nil
@@ -123,12 +125,250 @@ function distancer.get_hud_position()
 
 end -- distancer.get_hud_position
 
+function distancer.who()
+    local online = minetest.get_player_names()
+    if(online == nil) then 
+        distancer.print(distancer.green .. "No Player is online?\n")
+        return
+                                        
+    else
+        table.sort(online)
+    
+    end -- if(online == nil
+                                            
+    distancer.print(distancer.green .. "Player now online:\n")
+                                        
+    for pl, name in pairs(online) do
+        distancer.print(distancer.green .. pl .. ": " .. distancer.orange .. name .. "\n")
+        
+    end -- for
+    
+end -- distancer.who(
+
+function distancer.show_mapblock()
+    local pos_string = distancer.get_mapblock()
+    if(pos_string ~= nil) then
+        distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string .. distancer.green .. ")\n")
+        
+    else
+        distancer.print(distancer.red .. "Couldn't calculate the Mapblocknr.")
+                                               
+    end -- if(pos_string ~= nil
+        
+end -- prospector.show_mapblock(
+    
+function distancer.dmark(parameter)
+        local command = {}
+        
+        command = distancer.split(parameter)
+        local current_position = distancer.you:get_pos()
+        current_position = distancer.convert_position(current_position)
+                                         
+        -- No Node or Index given
+        if(command[1] == nil or command[1] == "") then
+            if(distancer.marker ~= nil) then
+                                         
+                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
+                                         
+            else
+                distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set.\n")
+                                 
+            end -- if(distancer.marker ~=
+    
+        elseif(command[1] == "-s") then
+            distancer.marker = current_position
+            distancer.print(distancer.green .. "Marker set to " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
+                                         
+        elseif(command[1] == "-m") then
+            if(distancer.marker ~= nil) then
+                                         
+                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. minetest.pos_to_string(distancer.marker))
+                distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. minetest.pos_to_string(current_position))
+                                         
+                local distance = math.floor(vector.distance(current_position, distancer.marker))
+                                         
+                distancer.print(distancer.green .. "You are " .. distancer.light_blue .. distance .. distancer.green .. " Nodes far away.")
+                                         
+            else
+                                         
+                distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set " .. distancer.green .. " to calculate a Distance.\n")
+                                         
+            end -- if(distancer.marker ~= nil
+        
+        elseif(command[1] == "-w") then
+            
+            if(command[2] == nil or command[2] == "") then
+                distancer.print(distancer.red .. "No Position to set Marker given.\n")
+                                         
+            else
+                if(tonumber(command[2]) ~= nil and tonumber(command[3]) ~= nil and tonumber(command[4]) ~= nil) then
+                    local new_marker = "(" .. tonumber(command[2]) .. "," .. tonumber(command[3]) .. "," .. tonumber(command[4]) .. ")"
+                    distancer.print(distancer.green .. "Marker set to : " .. distancer.orange .. new_marker .. "\n")
+                    distancer.marker = minetest.string_to_pos(new_marker)
+                    distancer.marker = distancer.convert_position(distancer.marker)
+                                         
+                else
+                    distancer.print(distancer.red .. "Wrong Position(format) given.\n")
+                                                                                       
+                end -- if(command[3] .. command[4]
+                                                                                       
+            end -- if(command[2] ~= nil
+                                         
+        elseif(command[1] == "-p") then                                         
+            
+            if(distancer.marker ~= nil) then
+                    local distance = distancer.calc_distance_pos(distancer.marker, current_position)
+                    distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. minetest.pos_to_string(distancer.marker))
+                    distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. minetest.pos_to_string(current_position))
+                    distancer.print(distancer.green .. "The Distance between them is: " .. distancer.white .. minetest.pos_to_string(distance))
+                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.x .. distancer.green .. " Steps at X-Axis.")
+                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.y .. distancer.green .. " Steps at Y-Axis.")
+                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.z .. distancer.green .. " Steps at Z-Axis.")
+            else
+                distancer.print(distancer.red .. "No Marker set.\n")
+                                                                                       
+            end -- if(distancer.marker ~= nil
+                                         
+        end -- if(command[1] ==
+            
+end -- distancer.dmark(
+    
+function distancer.version()
+    distancer.print(distancer.green .. "Client-Side-Mod: " .. distancer.modname .. distancer.orange .. " v " .. distancer.version .. "." .. distancer.revision .. "\n")
+    
+end -- distancer.version
+
+--[[
+   ****************************************************************
+   *******     Functions for MOD-Channel of Distancer        ******
+   ****************************************************************
+--]]
+
+function distancer.handle_channel_event(channel, msg)
+    local report = ""
+    if(msg ~= 0) then
+        if(msg == 0) then
+            report = distancer.orange .. " join with success.\n"
+            
+        elseif(msg == 1) then
+            report = distancer.red .. " join failed.\n"
+            
+        elseif(msg == 2) then
+            report = distancer.orange .. " leave with success.\n"
+            
+        elseif(msg == 3) then
+            report = distancer.red .. " leave failed.\n"
+            
+        elseif(msg == 4) then
+            report = distancer.orange .. " Event on another Channel.\n"
+            
+        elseif(msg == 5) then 
+            report = distancer.orange .. " state changed.\n"
+        else
+            report = distancer.red .. " unknown Event.\n"
+        end
+        
+        distancer.print(distancer.green .. "Distancerchannel: " .. distancer.orange .. channel .. report)
+        
+    end -- if(msg ~= 0
+    
+end -- function prospector.handle_channel_event(
+
+function distancer.handle_message(sender, message)
+    distancer.print(distancer.green .. "Distancermessage from " .. distancer.orange .. sender .. distance.green .. " received.\n")
+    distancer.print(distancer.green .. "Message: " .. distancer.orange .. message .. distancer.green .. " .\n")
+end -- distancer.handle_message
+
 --[[
    ****************************************************************
    *******        Functions for HUD of Distancer             ******
    ****************************************************************
 --]]
 
+function distancer.set_hud_mapblock(parameter)
+    if(parameter == "on") then
+        if(not distancer.check_hud_mapblock()) then
+            distancer.add_hud_mapblock()
+                                                       
+        else
+            distancer.print(distancer.orange .. "HUD for Mapblock already on.")
+                                                       
+        end -- if(distancer.hud_mapblock_label
+        
+    elseif(parameter == "off") then
+        if(distancer.check_hud_mapblock()) then
+            distancer.remove_hud_mapblock()
+            
+        else
+            distancer.print(distancer.orange .. "HUD for Mapblock isn't on.")
+                                                       
+        end -- if(distancer.hud_mapblock_label
+        
+    else
+        distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_mapblock\n")
+        distancer.print(distancer.orange .. "Usage: .distancer_hud_mapblock on|off")
+                                                       
+    end -- if(parameter ==
+
+end -- distancer.set_hud_mapblock(
+
+function distancer.set_hud_measure(parameter)
+    if(parameter == "on") then
+        if(not distancer.check_hud_measure()) then
+            distancer.add_hud_measure()
+                                                       
+        else
+            distancer.print(distancer.orange .. "HUD for Distancemeasure already on.")
+                                                       
+        end -- if(distancer.hud_mapblock_label
+        
+    elseif(parameter == "off") then
+        if(distancer.check_hud_measure) then
+            distancer.remove_hud_measure()
+            
+        else
+            distancer.print(distancer.orange .. "HUD for Distancemeasure isn't on.")
+                                                       
+        end -- if(distancer.hud_mapblock_label
+        
+    else
+        distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_measure\n")
+        distancer.print(distancer.orange .. "Usage: .distancer_hud_measure on|off")
+                                                       
+    end -- if(parameter ==
+        
+end -- distancer.set_hud_measure(
+
+function distancer.dhud_set(parameter)
+    local command = {}
+        
+    command = distancer.split(parameter)
+                                                              
+    if(command[1] == nil or command[1] == "") then
+        distancer.get_hud_position()
+        
+    elseif(command[1] == "-r") then         -- Reset the Position
+        distancer.hud_reset()
+
+    elseif(command[1] == "-w") then         -- Changes the Position
+        local position = {}
+        local x, y
+        x = tonumber(command[2]) or 0
+        y = tonumber(command[3]) or 0
+        position.x = x
+        position.y = y
+        if(not distancer.change_hud_position(position)) then
+            distancer.print(distancer.red .. "Wrong Positiondata given.\n" .. distancer.orange .. "X = " .. position.x .. "\n" .. distancer.orange .. "Y = " .. position.y .. "\n")
+                                                     
+        end -- if(not distancher.change_hud_position
+        
+    else -- Unknown Command given
+        distancer.print(distancer.red .. "Unknown Command for .distancer_change_hud given.\n" .. distancer.orange .. "Usage: .distancer_change_hud <> | -r | -w .X,.Y\n")
+                                                     
+    end -- if(command[1] ==
+                                                              
+end -- distancer.dhud_set
+    
 function distancer.update_hud()
 
     if(distancer.hud_mapblock ~= false) then
@@ -162,6 +402,27 @@ function distancer.update_hud()
     end -- if(distancer.speed
         
 end -- distancer.update_hud
+
+function distancer.dhud_speed(parameter)
+        local command = {}
+                                                    
+        command = distancer.split(parameter)
+                                                    
+        if(command[1] == nil or command[1] == "") then
+            if(distancer.speed > 0) then
+                distancer.print(distancer.green .. "The HUD of Distancer will update every " .. distancer.orange .. distancer.speed .. distancer.green .. " Seconds.\n")
+                                                    
+            else
+                distancer.print(distancer.green .. "The HUD of Distancer is off.\n")
+                                                    
+            end -- if(distancer.speed
+        else
+            local newspeed = tonumber(command[1]) or 0
+            distancer.hud_speed(newspeed)
+                                                    
+        end -- if(command[1] ==
+            
+end -- distancer.dhug_speed
 
 function distancer.add_hud_mapblock()
 
@@ -398,297 +659,88 @@ end -- distancer.hud_speed(
 
 --[[
    ****************************************************************
-   *******        Main for Distancer                         ******
-   ****************************************************************
---]]
-
--- Get yourself
-distancer.you = minetest.localplayer               
-
---[[
-minetest.register_globalstep(function(dtime) 
-    distancer.update_hud()
-
-end)  -- minetest.register_globalstep
-]]--
-
-minetest.after(distancer.speed, function()
-    distancer.update_hud()
-              
-end) -- minetest.after(
-               
-
-
-
---[[
-   ****************************************************************
    *******        Registered Chatcommands                    ******
    ****************************************************************
 --]]
 
-minetest.register_chatcommand("distancer_who_is_online", {
+minetest.register_chatcommand("dwho", {
 
     params = "<>",
     description = "Shows you all online Playernames.\nUsage:\n<> shows you all Playernames.\n",
     func = function()
-    
-        local online = minetest.get_player_names()
-        if(online == nil) then 
-                distancer.print(distancer.green .. "No Player is online?\n")
-                return
-                                        
-        else
-            table.sort(online)
-    
-        end -- if(online == nil
-                                            
-        distancer.print(distancer.green .. "Player now online:\n")
-                                        
-        for pl, name in pairs(online) do
-            distancer.print(distancer.green .. pl .. ": " .. distancer.orange .. name .. "\n")
-        
-        end -- for
+        distancer.who()
+                                                         
     end -- function
                                             
 }) -- chatcommand who_is_online
 
-minetest.register_chatcommand("distancer_show_mapblock",{
+minetest.register_chatcommand("dshow_mapblock",{
 
     params = "<>",
     description = "Shows the current Mapblock, where you are.",
     func = function()
-                                              
-        local pos_string = distancer.get_mapblock()
-        if(pos_string ~= nil) then
-            distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string .. distancer.green .. ")\n")
-        
-        else
-            distancer.print(distancer.red .. "Couldn't calculate the Mapblocknr.")
-                                               
-        end -- if(pos_string ~= nil
-                                               
-                                               
+        distancer.show_mapblock()
+
     end -- function
                                               
 }) -- chatcommand show_mapblock
 
 
-minetest.register_chatcommand("distancer_hud_mapblock",{
+minetest.register_chatcommand("dhud_mapblock",{
 
     params = "on|off",
     description = "Turn's the HUD for the Mapblock on or off.",
     func = function(param)
-                                                       
         local parameter = param:lower()
-        if(parameter == "on") then
-            if(not distancer.check_hud_mapblock()) then
-                distancer.add_hud_mapblock()
-                                                       
-            else
-                distancer.print(distancer.orange .. "HUD for Mapblock already on.")
-                                                       
-            end -- if(distancer.hud_mapblock_label
-        
-        elseif(parameter == "off") then
-            if(distancer.check_hud_mapblock()) then
-                distancer.remove_hud_mapblock()
-            
-            else
-                distancer.print(distancer.orange .. "HUD for Mapblock isn't on.")
-                                                       
-            end -- if(distancer.hud_mapblock_label
-        
-        else
-            distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_mapblock\n")
-            distancer.print(distancer.orange .. "Usage: .distancer_hud_mapblock on|off")
-                                                       
-        end -- if(parameter ==
+        distancer.set_hud_mapblock(parameter)
                                                        
     end -- function(param
                                                        
 }) -- chatcommand distancer_hud_mapblock
 
-minetest.register_chatcommand("distancer_hud_measure",{
+minetest.register_chatcommand("dhud_measure",{
 
     params = "on|off",
     description = "Turn's the HUD for the Distancemeasure on or off.",
-    func = function(param)
-                                                       
+    func = function(param)                                                       
         local parameter = param:lower()
-        if(parameter == "on") then
-            if(not distancer.check_hud_measure()) then
-                distancer.add_hud_measure()
-                                                       
-            else
-                distancer.print(distancer.orange .. "HUD for Distancemeasure already on.")
-                                                       
-            end -- if(distancer.hud_mapblock_label
-        
-        elseif(parameter == "off") then
-            if(distancer.check_hud_measure) then
-                distancer.remove_hud_measure()
-            
-            else
-                distancer.print(distancer.orange .. "HUD for Distancemeasure isn't on.")
-                                                       
-            end -- if(distancer.hud_mapblock_label
-        
-        else
-            distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_measure\n")
-            distancer.print(distancer.orange .. "Usage: .distancer_hud_measure on|off")
-                                                       
-        end -- if(parameter ==
-                                                       
+        distancer.set_hud_measure(parameter)
+                                             
     end -- function(param
                                                        
 }) -- chatcommand distancer_hud_mapblock
 
     
-minetest.register_chatcommand("distancer_marker",{
+minetest.register_chatcommand("dmark",{
 
     params = "<> | -s | -m | -p | -w X,Y,Z",
     description = "\n<> shows you the stored Marker.\n-s - Set's the Marker to your current Position.\n-m - Shows the Distance from your Marker.\n-p - Shows the Distance from your Marker as Vector\n-w X,Y,Z - Set's the Marker to X,Y,Z",
-    func = function(param)
-        
+    func = function(param)                                      
         local parameter = param:lower()
-        local command = {}
-        
-        command = distancer.split(parameter)
-        local current_position = distancer.you:get_pos()
-        current_position = distancer.convert_position(current_position)
-                                         
-        -- No Node or Index given
-        if(command[1] == nil or command[1] == "") then
-            if(distancer.marker ~= nil) then
-                                         
-                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
-                                         
-            else
-                distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set.\n")
-                                 
-            end -- if(distancer.marker ~=
-    
-        elseif(command[1] == "-s") then
-            distancer.marker = current_position
-            distancer.print(distancer.green .. "Marker set to " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
-                                         
-        elseif(command[1] == "-m") then
-            if(distancer.marker ~= nil) then
-                                         
-                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. minetest.pos_to_string(distancer.marker))
-                distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. minetest.pos_to_string(current_position))
-                                         
-                local distance = math.floor(vector.distance(current_position, distancer.marker))
-                                         
-                distancer.print(distancer.green .. "You are " .. distancer.light_blue .. distance .. distancer.green .. " Nodes far away.")
-                                         
-            else
-                                         
-                distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set " .. distancer.green .. " to calculate a Distance.\n")
-                                         
-            end -- if(distancer.marker ~= nil
-        
-        elseif(command[1] == "-w") then
-            
-            if(command[2] == nil or command[2] == "") then
-                distancer.print(distancer.red .. "No Position to set Marker given.\n")
-                                         
-            else
-                if(tonumber(command[2]) ~= nil and tonumber(command[3]) ~= nil and tonumber(command[4]) ~= nil) then
-                    local new_marker = "(" .. tonumber(command[2]) .. "," .. tonumber(command[3]) .. "," .. tonumber(command[4]) .. ")"
-                    distancer.print(distancer.green .. "Marker set to : " .. distancer.orange .. new_marker .. "\n")
-                    distancer.marker = minetest.string_to_pos(new_marker)
-                    distancer.marker = distancer.convert_position(distancer.marker)
-                                         
-                else
-                    distancer.print(distancer.red .. "Wrong Position(format) given.\n")
-                                                                                       
-                end -- if(command[3] .. command[4]
-                                                                                       
-            end -- if(command[2] ~= nil
-                                         
-        elseif(command[1] == "-p") then                                         
-            
-            if(distancer.marker ~= nil) then
-                    local distance = distancer.calc_distance_pos(distancer.marker, current_position)
-                    distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. minetest.pos_to_string(distancer.marker))
-                    distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. minetest.pos_to_string(current_position))
-                    distancer.print(distancer.green .. "The Distance between them is: " .. distancer.white .. minetest.pos_to_string(distance))
-                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.x .. distancer.green .. " Steps at X-Axis.")
-                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.y .. distancer.green .. " Steps at Y-Axis.")
-                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.z .. distancer.green .. " Steps at Z-Axis.")
-            else
-                distancer.print(distancer.red .. "No Marker set.\n")
-                                                                                       
-            end -- if(distancer.marker ~= nil
-                                         
-        end -- if(command[1] ==
+        distancer.dmark(parameter)
                                         
     end -- function
                                               
 }) -- chatcommand show_mapblock
 
-minetest.register_chatcommand("distancer_change_hud",{
+minetest.register_chatcommand("dhud_set",{
 
     params = "<> | -r | -w .X,.Y",
     description = "\n<> shows you the current Position.\n-r - Resets the Position to default.\n-w 0.X,0.Y - Changes the Position in Percentage of the HUD",
     func = function(param)
-        
         local parameter = param:lower()
-        local command = {}
-        
-        command = distancer.split(parameter)
-                                                              
-        if(command[1] == nil or command[1] == "") then
-            distancer.get_hud_position()
-        
-        elseif(command[1] == "-r") then         -- Reset the Position
-            distancer.hud_reset()
-
-        elseif(command[1] == "-w") then         -- Changes the Position
-            local position = {}
-            local x, y
-            x = tonumber(command[2]) or 0
-            y = tonumber(command[3]) or 0
-            position.x = x
-            position.y = y
-            if(not distancer.change_hud_position(position)) then
-                    distancer.print(distancer.red .. "Wrong Positiondata given.\n" .. distancer.orange .. "X = " .. position.x .. "\n" .. distancer.orange .. "Y = " .. position.y .. "\n")
-                                                     
-            end
-        
-        else -- Unknown Command given
-            distancer.print(distancer.red .. "Unknown Command for .distancer_change_hud given.\n" .. distancer.orange .. "Usage: .distancer_change_hud <> | -r | -w .X,.Y\n")
-                                                     
-        end -- if(command[1] ==
-                                                              
-    end -- function
-                                                              
+        distancer.dhud_set(parameter)
+                                         
+    end -- func
 }) -- chatcommand distancer_change_hud
 
-minetest.register_chatcommand("distancer_hud_speed",{
+minetest.register_chatcommand("dhud_speed",{
     param = "<> | -s Seconds",
     description = "\n<> shows you the current Updatespeed in Seconds of the HUD.\n-s Seconds set's the new Value in Seconds. 0 turns the HUD off.",
     func = function(param)
         local parameter = param:lower()
-        local command = {}
-                                                    
-        command = distancer.split(parameter)
-                                                    
-        if(command[1] == nil or command[1] == "") then
-            if(distancer.speed > 0) then
-                distancer.print(distancer.green .. "The HUD of Distancer will update every " .. distancer.orange .. distancer.speed .. distancer.green .. " Seconds.\n")
-                                                    
-            else
-                distancer.print(distancer.green .. "The HUD of Distancer is off.\n")
-                                                    
-            end -- if(distancer.speed
-        else
-            local newspeed = tonumber(command[1]) or 0
-            distancer.hud_speed(newspeed)
-                                                    
-        end -- if(command[1] ==
-                                                    
+        distancer.dhud_speed(parameter)
+                                           
     end -- function
                                                     
 }) -- chatcommand distancer_hud_speed
@@ -698,13 +750,38 @@ minetest.register_chatcommand("distancer_version",{
     params = "<>",
     description = "Shows the current Revision of ".. distancer.modname .. ".",
     func = function ()
-        
-        distancer.print(distancer.green .. "Client-Side-Mod: " .. distancer.modname .. distancer.orange .. " v " .. distancer.version .. "." .. distancer.revision .. "\n")
+        distancer.version()
         
     end -- function
 
 }) -- chatcommand distancer_version
         
        
-   
+--[[
+   ****************************************************************
+   *******        Main for Distancer                         ******
+   ****************************************************************
+--]]
+
+-- Get yourself
+distancer.you = minetest.localplayer
+
+minetest.after(distancer.speed, function()
+    distancer.update_hud()
+              
+end) -- minetest.after(
+
+-- Join to shared Modchannel
+distancer.channel = minetest.mod_channel_join(distancer.channelname)
+
+minetest.register_on_modchannel_signal(function(channelname, signal)
+            distancer.handle_channel_event(channelname, signal)
+                                      
+end) -- minetest.register_on_modchannel_signal(
+
+minetest.register_on_modchannel_message(function(channelname, sender, message)
+        distancer.handle_message(sender, message)
+                                        
+end) -- minetest.register_on_mod_channel_message
+
                                                     
