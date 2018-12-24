@@ -427,6 +427,11 @@ end -- distancer.dhug_speed
 function distancer.add_hud_mapblock()
 
     local idx = 0 -- Starting Hud
+    if(distancer.you == nil) then
+        distancer.you = minetest.localplayer
+        
+    end -- if(distancer.you == nil
+    
     distancer.hud_mapblock_label = distancer.you:hud_add(
     {
         name = "Mapblock",    -- default ""
@@ -455,6 +460,11 @@ end -- function add_hud_mapblock()
 function distancer.add_hud_measure()
     
     local idx = .04
+    if(distancer.you == nil) then
+        distancer.you = minetest.localplayer
+        
+    end -- if(distancer.you == nil
+    
     distancer.hud_distance_label = distancer.you:hud_add(
     {
         name = "Mesure",    -- default ""
@@ -764,8 +774,10 @@ minetest.register_chatcommand("distancer_version",{
 --]]
 
 -- Get yourself
-distancer.you = minetest.localplayer
-
+minetest.register_on_mods_loaded(function()
+    distancer.you = minetest.localplayer
+end) -- function
+                            
 minetest.after(distancer.speed, function()
     distancer.update_hud()
               
