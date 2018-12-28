@@ -10,7 +10,7 @@
 local distancer = {}
 
 distancer.version = 2
-distancer.revision = 5
+distancer.revision = 6
 distancer.modname = "Distancer"
 distancer.channelname = "distancer"
 distancer.channel = nil
@@ -45,18 +45,13 @@ distancer.hud_distance_label = nil
 distancer.hud_marker = nil
 distancer.hud_position = nil
 distancer.hud_distance = nil
+distancer.hud_waypoint = nil
 
 --[[
    ****************************************************************
    *******        Functions for Distancer                    ******
    ****************************************************************
 --]]
-
-
-function distancer.calc_distance()
-    return math.floor(vector.distance(distancer.you:get_pos(), minetest.string_to_pos(distancer.last_pos)))
-
-end -- function calc_distance
 
 function distancer.calc_distance_pos(pos_1, pos_2)
     local distance = {}
@@ -305,8 +300,8 @@ function distancer.set_hud_mapblock(parameter)
         end -- if(distancer.hud_mapblock_label
         
     else
-        distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_mapblock\n")
-        distancer.print(distancer.orange .. "Usage: .distancer_hud_mapblock on|off")
+        distancer.print(distancer.red .. "Wrong or no Parameter for .dhud_mapblock\n")
+        distancer.print(distancer.orange .. "Usage: .dhud_mapblock on|off")
                                                        
     end -- if(parameter ==
 
@@ -318,30 +313,62 @@ function distancer.set_hud_measure(parameter)
             distancer.add_hud_measure()
                                                        
         else
-            distancer.print(distancer.orange .. "HUD for Distancemeasure already on.")
+            distancer.print(distancer.orange .. "HUD for Measure already on.")
                                                        
-        end -- if(distancer.hud_mapblock_label
+        end -- if(distancer.hud_measure
         
     elseif(parameter == "off") then
-        if(distancer.check_hud_measure) then
+        if(distancer.check_hud_measure()) then
             distancer.remove_hud_measure()
             
         else
-            distancer.print(distancer.orange .. "HUD for Distancemeasure isn't on.")
+            distancer.print(distancer.orange .. "HUD for Measure isn't on.")
                                                        
         end -- if(distancer.hud_mapblock_label
         
     else
-        distancer.print(distancer.red .. "Wrong or no Parameter for .distancer_hud_measure\n")
-        distancer.print(distancer.orange .. "Usage: .distancer_hud_measure on|off")
+        distancer.print(distancer.red .. "Wrong or no Parameter for .dhud_measure\n")
+        distancer.print(distancer.orange .. "Usage: .dhud_measure on|off")
                                                        
     end -- if(parameter ==
         
 end -- distancer.set_hud_measure(
 
+function distancer.set_hud_waypoint(parameter)
+    if(parameter == "on") then
+        if(not distancer.check_hud_waypoint()) then
+            if(distancer.marker == nil) then
+                distancer.marker = {x = 0, y = 0, z = 0}
+                
+            end -- if(distancer.marker == nil
+            
+            distancer.add_hud_waypoint()
+        
+        else
+            distancer.print(distancer.orange .. "HUD for Waypoint already on.")
+        
+        end -- if(distancer.hud_waypoint
+    
+    elseif(parameter == "off") then
+        if(distancer.check_hud_waypoint()) then
+            distancer.remove_hud_waypoint()
+            
+        else
+            distancer.print(distancer.orange .. "HUD for Waypiont isn't on.")
+            
+        end -- if(distancer.hud_waypoint
+    else
+        distancer.print(distancer.red .. "Wrong or no Parameter for .dhud_waypoint.\n")
+        distancer.print(distancer.orange .. "Usage: .dhud_waypoint on|off")
+    
+    end -- if(parameter ==
+        
+end -- distancer.set_hud_waypoint(
+
 function distancer.set_hud(parameter)
     distancer.set_hud_mapblock(parameter)
     distancer.set_hud_measure(parameter)
+    distancer.set_hud_waypoint(parameter)
 
 end -- distancer.set_hud
 
@@ -399,7 +426,12 @@ function distancer.update_hud()
         end -- if(distancer.hud_marker ~= nil
     
     end -- if(hud_marker and hud_position and hud_distance
-
+    
+    if(distancer.hud_waypoint ~= nil) then        
+        distancer.you:hud_change(distancer.hud_waypoint, "world_pos", distancer.marker)
+        
+    end -- if(distancer.hud_waypoint ~= nil
+        
     if(distancer.speed > 0) then
         minetest.after(distancer.speed, function()
             distancer.update_hud()
@@ -521,6 +553,20 @@ function distancer.add_hud_measure()
       
 end -- distancer.add_hud_measure()
 
+function distancer.add_hud_waypoint()
+    
+    --local idx = idx + .12
+    distancer.hud_waypoint = distancer.you:hud_add(
+    {
+        name = "<Marker>",
+        hud_elem_type = "waypoint",
+        number = 0xFF0000,
+        text = "",
+        world_pos = {x=0, y=0, z=0},
+    }) -- distancer.you:hud_add
+
+end -- distancer.add_hud_waypoint()
+
 function distancer.remove_hud_mapblock()
     distancer.you:hud_remove(distancer.hud_mapblock_label)
     distancer.you:hud_remove(distancer.hud_mapblock)
@@ -541,6 +587,12 @@ function distancer.remove_hud_measure()
     
 end -- function distancer.remove_hud_measure
 
+function distancer.remove_hud_waypoint()
+    distancer.you:hud_remove(distancer.hud_waypoint)
+    distancer.hud_waypoint = nil
+    
+end -- function distancer.remove_hud_waypoint
+    
 function distancer.check_hud_mapblock()
     local on = false
     
@@ -553,6 +605,7 @@ function distancer.check_hud_mapblock()
     
 end -- distancer.check_hud_mapblock
 
+--[[
 function distancer.check_hud_measure()
     local on = false
     
@@ -564,6 +617,7 @@ function distancer.check_hud_measure()
     return on
     
 end -- distancer.check_hud_mapblock
+]]--
 
 function distancer.check_hud_measure()
     local on = false
@@ -581,6 +635,18 @@ function distancer.check_hud_measure()
 
 end -- distancer.check_hud_measure()
 
+function distancer.check_hud_waypoint()
+    local on = false
+    
+    if(distancer.hud_waypoint ~= nil) then
+        on = true
+    
+    end -- if(distancer.hud_waypoint
+    
+    return on
+
+end -- function distancer.check_hud_waypoint
+    
 function distancer.change_hud_position(position)
     local x = position.x
     local y = position.y
@@ -702,6 +768,17 @@ minetest.register_chatcommand("dshow_mapblock",{
                                               
 }) -- chatcommand show_mapblock
 
+minetest.register_chatcommand("dmark",{
+
+    params = "<> | -s | -m | -p | -w X,Y,Z",
+    description = "\n<> shows you the stored Marker.\n-s - Set's the Marker to your current Position.\n-m - Shows the Distance from your Marker.\n-p - Shows the Distance from your Marker as Vector\n-w X,Y,Z - Set's the Marker to X,Y,Z",
+    func = function(param)                                      
+        local parameter = param:lower()
+        distancer.dmark(parameter)
+                                        
+    end -- function
+                                              
+}) -- chatcommand show_mapblock
 
 minetest.register_chatcommand("dhud_mapblock",{
 
@@ -725,20 +802,30 @@ minetest.register_chatcommand("dhud_measure",{
                                              
     end -- function(param
                                                        
-}) -- chatcommand dhud_mapblock
+}) -- chatcommand dhud_measure
 
-    
-minetest.register_chatcommand("dmark",{
+minetest.register_chatcommand("dhud_waypoint",{
 
-    params = "<> | -s | -m | -p | -w X,Y,Z",
-    description = "\n<> shows you the stored Marker.\n-s - Set's the Marker to your current Position.\n-m - Shows the Distance from your Marker.\n-p - Shows the Distance from your Marker as Vector\n-w X,Y,Z - Set's the Marker to X,Y,Z",
-    func = function(param)                                      
+    params = "on|off",
+    description = "Turn's the HUD for the Waypoint on or off.",
+    func = function(param)                                                       
         local parameter = param:lower()
-        distancer.dmark(parameter)
-                                        
-    end -- function
-                                              
-}) -- chatcommand show_mapblock
+        distancer.set_hud_waypoint(parameter)
+                                             
+    end -- function(param
+                                                       
+}) -- chatcommand dhud_waypoint
+
+minetest.register_chatcommand("dhud",{
+    params = "on|off",
+    description = "Turn's all HUD's of Distancer on or off.",
+    func = function(param)                                                       
+        local parameter = param:lower()
+        distancer.set_hud(parameter)
+                                             
+    end -- function(param
+                                                       
+}) -- chatcommand dhud
 
 minetest.register_chatcommand("dhud_set",{
 
@@ -761,17 +848,6 @@ minetest.register_chatcommand("dhud_speed",{
     end -- function
                                                     
 }) -- chatcommand dhud_speed
-
-minetest.register_chatcommand("dhud",{
-    params = "on|off",
-    description = "Turn's all HUD's of Distancer on or off.",
-    func = function(param)                                                       
-        local parameter = param:lower()
-        distancer.set_hud(parameter)
-                                             
-    end -- function(param
-                                                       
-}) -- chatcommand dhud
                                       
 minetest.register_chatcommand("distancer_version",{
     

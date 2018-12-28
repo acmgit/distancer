@@ -16,6 +16,7 @@ Be carefull, this Version works only with Minetest Version 5.x.x.
 .dhud on|off          | Turns all HUD's of Distancer on or off.<br>
 .dhud_mapblock on|off | Turns the HUD for the current Mapblock on or off.<br>
 .dhud_measure on|off  | Turns the HUD for the Marker, Position and Distance on or off<br>
+.dhud_waypoint on|off | Turns the HUD for the Waypoint (Marker) on or off<br>
 .dhud_set <>          | Show's the current Position of the HUD in the Chat.
 .dhud_set -r          | Reset's the Position of the HUD to default.
 .dhud_set -w .x,.y    | Changes the Position of the HUD on the Screen<br>
