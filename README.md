@@ -13,6 +13,7 @@ Be carefull, this Version works only with Minetest Version 5.x.x.
 .dmark -w X,Y,Z | Writes a manual given Position to the Marker. Example: .marker -w 50,-10,100 - Set's the Marker to the Position 50,-10,100.<br>
 
 ## HUD-Commands
+.dhud on|off          | Turns all HUD's of Distancer on or off.<br>
 .dhud_mapblock on|off | Turns the HUD for the current Mapblock on or off.<br>
 .dhud_measure on|off  | Turns the HUD for the Marker, Position and Distance on or off<br>
 .dhud_set <>          | Show's the current Position of the HUD in the Chat.

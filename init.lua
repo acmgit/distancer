@@ -10,7 +10,7 @@
 local distancer = {}
 
 distancer.version = 2
-distancer.revision = 4
+distancer.revision = 5
 distancer.modname = "Distancer"
 distancer.channelname = "distancer"
 distancer.channel = nil
@@ -338,6 +338,13 @@ function distancer.set_hud_measure(parameter)
     end -- if(parameter ==
         
 end -- distancer.set_hud_measure(
+
+function distancer.set_hud(parameter)
+    distancer.set_hud_mapblock(parameter)
+    distancer.set_hud_measure(parameter)
+
+end -- distancer.set_hud
+
 
 function distancer.dhud_set(parameter)
     local command = {}
@@ -706,7 +713,7 @@ minetest.register_chatcommand("dhud_mapblock",{
                                                        
     end -- function(param
                                                        
-}) -- chatcommand distancer_hud_mapblock
+}) -- chatcommand dhud_mapblock
 
 minetest.register_chatcommand("dhud_measure",{
 
@@ -718,7 +725,7 @@ minetest.register_chatcommand("dhud_measure",{
                                              
     end -- function(param
                                                        
-}) -- chatcommand distancer_hud_mapblock
+}) -- chatcommand dhud_mapblock
 
     
 minetest.register_chatcommand("dmark",{
@@ -753,8 +760,19 @@ minetest.register_chatcommand("dhud_speed",{
                                            
     end -- function
                                                     
-}) -- chatcommand distancer_hud_speed
+}) -- chatcommand dhud_speed
 
+minetest.register_chatcommand("dhud",{
+    params = "on|off",
+    description = "Turn's all HUD's of Distancer on or off.",
+    func = function(param)                                                       
+        local parameter = param:lower()
+        distancer.set_hud(parameter)
+                                             
+    end -- function(param
+                                                       
+}) -- chatcommand dhud
+                                      
 minetest.register_chatcommand("distancer_version",{
     
     params = "<>",
