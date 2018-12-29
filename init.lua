@@ -426,7 +426,7 @@ function distancer.update_hud()
         end -- if(distancer.hud_marker ~= nil
     
     end -- if(hud_marker and hud_position and hud_distance
-    
+        
     if(distancer.hud_waypoint ~= nil) then        
         distancer.you:hud_change(distancer.hud_waypoint, "world_pos", distancer.marker)
         
@@ -605,19 +605,6 @@ function distancer.check_hud_mapblock()
     
 end -- distancer.check_hud_mapblock
 
---[[
-function distancer.check_hud_measure()
-    local on = false
-    
-    if(distancer.hud_mapblock_label ~= nil and distancer.hud_mapblock ~= nil) then
-            on = true
-                                                       
-    end -- if(distancer.hud_mapblock_label
-    
-    return on
-    
-end -- distancer.check_hud_mapblock
-]]--
 
 function distancer.check_hud_measure()
     local on = false
