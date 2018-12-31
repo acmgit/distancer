@@ -34,6 +34,24 @@ distancer.light_blue = minetest.get_color_escape_sequence('#8888FF')
 distancer.light_green = minetest.get_color_escape_sequence('#88FF88')
 distancer.light_red = minetest.get_color_escape_sequence('#FF8888')
 
+distancer.hud_color = {
+                        ["green"]        = 0x00FF00,
+                        ["red"]          = 0xFF0000,
+                        ["orange"]       = 0xFF6700,
+                        ["blue"]         = 0x0000FF,
+                        ["yellow"]       = 0xFFFF00,
+                        ["purple"]       = 0xFF00FF,
+                        ["pink"]         = 0xFFAAFF,
+                        ["white"]        = 0xFFFFFF,
+                        ["black"]        = 0x000000,
+                        ["grey"]         = 0x888888,
+                        ["lightblue"]    = 0x8888FF,
+                        ["lightgreen"]   = 0x88FF88,
+                        ["lightred"]     = 0xFF8888,
+                    }
+
+distancer.hud_waypoint_color = distancer.hud_color["red"]
+
 -- Position of the Hud
 distancer.hud_x = 0.9
 distancer.hud_y = 0.7
@@ -228,8 +246,8 @@ function distancer.dmark(parameter)
             
 end -- distancer.dmark(
     
-function distancer.version()
-    distancer.print(distancer.green .. "Client-Side-Mod: " .. distancer.modname .. distancer.orange .. " v " .. distancer.version .. "." .. distancer.revision .. "\n")
+function distancer.show_version()
+    print("[CSM-MOD]" .. distancer.modname .. " v " .. distancer.version .. "." .. distancer.revision .. " loaded. \n")
     
 end -- distancer.version
 
@@ -335,7 +353,10 @@ function distancer.set_hud_measure(parameter)
 end -- distancer.set_hud_measure(
 
 function distancer.set_hud_waypoint(parameter)
-    if(parameter == "on") then
+    local command = {}
+    command = distancer.split(parameter)
+
+    if(command[1] == "on") then
         if(not distancer.check_hud_waypoint()) then
             if(distancer.marker == nil) then
                 distancer.marker = {x = 0, y = 0, z = 0}
@@ -347,21 +368,42 @@ function distancer.set_hud_waypoint(parameter)
         else
             distancer.print(distancer.orange .. "HUD for Waypoint already on.")
         
-        end -- if(distancer.hud_waypoint
+        end -- if(distancer.check_hud_waypoint
     
-    elseif(parameter == "off") then
+    elseif(command[1] == "off") then
         if(distancer.check_hud_waypoint()) then
             distancer.remove_hud_waypoint()
             
         else
             distancer.print(distancer.orange .. "HUD for Waypiont isn't on.")
             
-        end -- if(distancer.hud_waypoint
+        end -- if(distancer.check_hud_waypoint
+            
+    elseif(command[1] == "-c") then
+            if(command[2] ~= nil and distancer.hud_color[command[2]] ~= nil) then -- Color is valid
+                distancer.hud_waypoint_color = distancer.hud_color[command[2]]
+                if(distancer.hud_marker ~= nil) then
+                    distancer.remove_hud_waypoint()
+                    distancer.add_hud_waypoint()
+                    
+                end -- Hud is on, so reset it
+                
+                distancer.print(distancer.green .. "Color for Waypoint set to " .. distancer.orange .. command[2] .. distancer.green .. ".\n")
+                
+            else
+                distancer.print(distancer.green .. "Waypoint Colors are:\n")
+                for key,value in pairs(distancer.hud_color) do
+                    distancer.print(distancer.yellow .. key .. distancer.green .. " = " .. distancer.orange .. string.format("0x%06X",value) .. "\n")
+          
+                end -- for(key, value
+          
+            end -- if(distancer.hud_color[command[2]] ~= nil
+          
     else
         distancer.print(distancer.red .. "Wrong or no Parameter for .dhud_waypoint.\n")
-        distancer.print(distancer.orange .. "Usage: .dhud_waypoint on|off")
+        distancer.print(distancer.orange .. "Usage: .dhud_waypoint on|off|color [colorname]")
     
-    end -- if(parameter ==
+    end -- if(command ==
         
 end -- distancer.set_hud_waypoint(
 
@@ -558,10 +600,10 @@ function distancer.add_hud_waypoint()
     --local idx = idx + .12
     distancer.hud_waypoint = distancer.you:hud_add(
     {
-        name = "<Marker>",
+        name = "<.dmark>",
         hud_elem_type = "waypoint",
-        number = 0xFF0000,
-        text = "",
+        number = distancer.hud_waypoint_color,
+        text = " Meter",
         world_pos = {x=0, y=0, z=0},
     }) -- distancer.you:hud_add
 
@@ -835,18 +877,7 @@ minetest.register_chatcommand("dhud_speed",{
     end -- function
                                                     
 }) -- chatcommand dhud_speed
-                                      
-minetest.register_chatcommand("distancer_version",{
-    
-    params = "<>",
-    description = "Shows the current Revision of ".. distancer.modname .. ".",
-    func = function ()
-        distancer.version()
-        
-    end -- function
-
-}) -- chatcommand distancer_version
-        
+                                              
        
 --[[
    ****************************************************************
@@ -878,4 +909,4 @@ minetest.register_on_modchannel_message(function(channelname, sender, message)
                                         
 end) -- minetest.register_on_mod_channel_message
 
-                                                    
+distancer.show_version()
