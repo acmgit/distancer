@@ -64,6 +64,8 @@ distancer.hud_marker = nil
 distancer.hud_position = nil
 distancer.hud_distance = nil
 distancer.hud_waypoint = nil
+distancer.hud_waypoint_name = ""
+
 
 --[[
    ****************************************************************
@@ -190,7 +192,9 @@ function distancer.dmark(parameter)
     
         elseif(command[1] == "-s") then
             distancer.marker = current_position
+            distancer.hud_waypoint_name = minetest.pos_to_string(distancer.marker)
             distancer.print(distancer.green .. "Marker set to " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
+            distancer.refresh_hud_waypoint()
                                          
         elseif(command[1] == "-m") then
             if(distancer.marker ~= nil) then
@@ -219,6 +223,8 @@ function distancer.dmark(parameter)
                     distancer.print(distancer.green .. "Marker set to : " .. distancer.orange .. new_marker .. "\n")
                     distancer.marker = minetest.string_to_pos(new_marker)
                     distancer.marker = distancer.convert_position(distancer.marker)
+                    distancer.hud_waypoint_name = minetest.pos_to_string(distancer.marker)
+                    distancer.refresh_hud_waypoint()                    
                                          
                 else
                     distancer.print(distancer.red .. "Wrong Position(format) given.\n")
@@ -324,7 +330,7 @@ function distancer.set_hud_mapblock(parameter)
     end -- if(parameter ==
 
 end -- distancer.set_hud_mapblock(
-
+                
 function distancer.set_hud_measure(parameter)
     if(parameter == "on") then
         if(not distancer.check_hud_measure()) then
@@ -382,12 +388,7 @@ function distancer.set_hud_waypoint(parameter)
     elseif(command[1] == "-c") then
             if(command[2] ~= nil and distancer.hud_color[command[2]] ~= nil) then -- Color is valid
                 distancer.hud_waypoint_color = distancer.hud_color[command[2]]
-                if(distancer.hud_marker ~= nil) then
-                    distancer.remove_hud_waypoint()
-                    distancer.add_hud_waypoint()
-                    
-                end -- Hud is on, so reset it
-                
+                distancer.refresh_hud_waypoint()
                 distancer.print(distancer.green .. "Color for Waypoint set to " .. distancer.orange .. command[2] .. distancer.green .. ".\n")
                 
             else
@@ -598,9 +599,17 @@ end -- distancer.add_hud_measure()
 function distancer.add_hud_waypoint()
     
     --local idx = idx + .12
+    if(distancer.marker == nil) then
+        distancer.hud_waypoint_name = "0,0,0"
+        
+    else
+        distancer.hud_waypoint_name = minetest.pos_to_string(distancer.marker)
+    
+    end -- if(distancer.marker == nil
+        
     distancer.hud_waypoint = distancer.you:hud_add(
     {
-        name = "<.dmark>",
+        name = distancer.hud_waypoint_name,
         hud_elem_type = "waypoint",
         number = distancer.hud_waypoint_color,
         text = " Meter",
@@ -675,7 +684,34 @@ function distancer.check_hud_waypoint()
     return on
 
 end -- function distancer.check_hud_waypoint
+
+function distancer.refresh_hud_mapblock()
+    if(distancer.check_hud_mapblock()) then
+            distancer.set_hud_mapblock("off")
+            distancer.set_hud_mapblock("on")
+            
+    end -- if(distancer.check_hud_mapblock()
     
+end -- distancer.change_hud_mapblock()
+
+function distancer.refresh_hud_measure()
+    if(distancer.check_hud_measure()) then
+            distancer.set_hud_measure("off")
+            distancer.set_hud_measure("on")
+            
+    end -- if(distancer.check_hud_measure()
+    
+end -- distancer.change_hud_measure()
+
+function distancer.refresh_hud_waypoint()
+    if(distancer.check_hud_waypoint()) then
+            distancer.set_hud_waypoint("off")
+            distancer.set_hud_waypoint("on")
+            
+    end -- if(distancer.check_hud_mapblock()
+    
+end -- distancer.change_hud_mapblock()
+
 function distancer.change_hud_position(position)
     local x = position.x
     local y = position.y
