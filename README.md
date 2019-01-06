@@ -1,5 +1,6 @@
 # Distancer
 Client-Side-Mod for Minetest to calculate and measure Distances.<br>
+![Screenshot 1](screenshot.png)
 
 ## Description
 This Mod helps you, to measure Distances in Minetest.<br>
