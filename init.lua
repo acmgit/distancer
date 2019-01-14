@@ -7,13 +7,13 @@
    ****************************************************************
 --]]
 
+dst = {}
+
 local distancer = {}
 
 distancer.version = 2
-distancer.revision = 6
+distancer.revision = 7
 distancer.modname = "Distancer"
-distancer.channelname = "distancer"
-distancer.channel = nil
 
 distancer.you = nil -- Player
 distancer.marker = nil
@@ -33,6 +33,13 @@ distancer.grey = minetest.get_color_escape_sequence('#888888')
 distancer.light_blue = minetest.get_color_escape_sequence('#8888FF')
 distancer.light_green = minetest.get_color_escape_sequence('#88FF88')
 distancer.light_red = minetest.get_color_escape_sequence('#FF8888')
+
+dst.ver = distancer.version
+dst.rev = distancer.revision
+dst.mname = distancer.modname
+
+dst.channelname = "distancer"
+dst.channel = distancer.channel
 
 distancer.hud_color = {
                         ["green"]        = 0x00FF00,
@@ -256,6 +263,32 @@ function distancer.show_version()
     print("[CSM-MOD]" .. distancer.modname .. " v " .. distancer.version .. "." .. distancer.revision .. " loaded. \n")
     
 end -- distancer.version
+
+--[[
+   ****************************************************************
+   *******             Global API for Distancer              ******
+   ****************************************************************
+--]]
+
+--[[ 
+
+    dst.send_pos(<string>)
+    dst.send_pos("x,y,z")
+
+    for example: 
+    dst.send_pos("5,10,20") -- A Mod has set the Marker to Positon x = 5, y = 10, z = 20
+
+--]]
+
+function dst.send_pos(coord)
+    if(type(coord) == "string") then
+        distancer.marker = minetest.string_to_pos(coord)
+        distancer.dmark("-w " .. coord)
+        distancer.print(distancer.green .. "Prospector set the Marker to" .. distancer.orange .. coord .. distancer.green .. " .\n")
+            
+    end -- if(type(coord)
+                
+end -- function dst.send_pos
 
 --[[
    ****************************************************************
@@ -932,7 +965,7 @@ minetest.after(distancer.speed, function()
 end) -- minetest.after(
 
 -- Join to shared Modchannel
-distancer.channel = minetest.mod_channel_join(distancer.channelname)
+dst.channel = minetest.mod_channel_join(dst.channelname)
 
 minetest.register_on_modchannel_signal(function(channelname, signal)
             distancer.handle_channel_event(channelname, signal)
