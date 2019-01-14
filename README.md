@@ -39,7 +39,7 @@ dst.rev                 | Revision Number of the loaded Distancer.<br>
 dst.name                | Name of the Mod.<br>
 
 ### API:
-dst.send_pos(position)   | position = string like "0,0,0). Set's the Marker to the Position "x,y,z".<br>
+dst.send_pos(name, position)   | name = playername, position = string like "0,0,0". Set's the Marker to the Position "x,y,z".<br>
 
 ## License
 GPL 3.0 by A.C.M.<br>

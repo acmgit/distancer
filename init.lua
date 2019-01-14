@@ -272,21 +272,36 @@ end -- distancer.version
 
 --[[ 
 
-    dst.send_pos(<string>)
-    dst.send_pos("x,y,z")
+    dst.send_pos(<string>, <string>)
+    dst.send_pos("playername", "x,y,z")
 
     for example: 
-    dst.send_pos("5,10,20") -- A Mod has set the Marker to Positon x = 5, y = 10, z = 20
+    dst.send_pos("singleplayer", "5,10,20") -- A Mod has set the Marker to Position x = 5, y = 10, z = 20
 
 --]]
 
-function dst.send_pos(coord)
-    if(type(coord) == "string") then
-        distancer.marker = minetest.string_to_pos(coord)
-        distancer.dmark("-w " .. coord)
-        distancer.print(distancer.green .. "Prospector set the Marker to" .. distancer.orange .. coord .. distancer.green .. " .\n")
+function dst.send_pos(name, coord)
+    if(type(name) == "string") then
+        local myname = distancer.you:get_name()
+        
+        if(name == myname) then
             
-    end -- if(type(coord)
+            if(type(coord) == "string") then
+                distancer.marker = minetest.string_to_pos(coord)
+                distancer.dmark("-w " .. coord)
+                distancer.print(distancer.green .. "Prospector set the Marker to " .. distancer.orange .. coord .. distancer.green .. " .\n")
+                
+            else
+                distancer.print(distancer.yellow .. "Wrong or no Coordinates given.\n")
+                
+            end -- if(type(coord)
+            
+        end -- if(name == myname
+            
+    else
+        distancer.print(distancer.yellow .. "No Playername given.\n")
+        
+    end -- if(type(name)
                 
 end -- function dst.send_pos
 
