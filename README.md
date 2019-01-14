@@ -28,7 +28,6 @@ Be carefull, this Version works only with Minetest Version 5.x.x.
 ## Other Commands
 .dshow_mapblock       | Shows you the Mapblocknumber of your current Position.<br>
 .dwho                 | Lists the Names of the (online) Player.<br>
-.distancer_version    | Shows you the Version of the Mod.<br>
 
 ## for Modwriter
 With the Version 2.7 or higher, the Distancer has a API for other mods.<br>
