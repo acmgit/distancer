@@ -30,6 +30,17 @@ Be carefull, this Version works only with Minetest Version 5.x.x.
 .dwho                 | Lists the Names of the (online) Player.<br>
 .distancer_version    | Shows you the Version of the Mod.<br>
 
+## for Modwriter
+With the Version 2.7 or higher, the Distancer has a API for other mods.
+
+### Var:
+dst.ver                 | Version Number of the loaded Distancer.
+dst.rev                 | Revision Number of the loaded Distancer.
+dst.name                | Name of the Mod.
+
+### API:
+st.send_pos(position)   | position = string like "0,0,0). Set's the Marker to the Position "x,y,z". 
+
 ## License
 GPL 3.0 by A.C.M.<br>
 
