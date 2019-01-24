@@ -39,7 +39,6 @@ dst.rev = distancer.revision
 dst.mname = distancer.modname
 
 dst.channelname = "distancer"
-dst.channel = distancer.channel
 
 distancer.hud_color = {
                         ["green"]        = 0x00FF00,
@@ -313,9 +312,9 @@ end -- function dst.send_pos
 
 function distancer.handle_channel_event(channel, msg)
     local report = ""
-    if(msg ~= 0) then
+    if(msg >= 0) then
         if(msg == 0) then
-            report = distancer.orange .. " join with success.\n"
+            report = distancer.orange .. " joined with success.\n"
             
         elseif(msg == 1) then
             report = distancer.red .. " join failed.\n"
@@ -331,19 +330,27 @@ function distancer.handle_channel_event(channel, msg)
             
         elseif(msg == 5) then 
             report = distancer.orange .. " state changed.\n"
+            
         else
             report = distancer.red .. " unknown Event.\n"
+            
         end
+        distancer.print(distancer.green .. "[Distancer] Channel: " .. distancer.yellow .. channel .. distancer.green .. ": " .. distancer.orange .. report)
         
-        distancer.print(distancer.green .. "Distancerchannel: " .. distancer.orange .. channel .. report)
+      else
+        distancer.print(distancer.orange .. "[Distancer]: Illegal Message received on " .. distancer.yellow .. channel .. distancer.red .. ": " .. msg)
         
-    end -- if(msg ~= 0
+    end -- if(msg >= 0
     
 end -- function prospector.handle_channel_event(
 
-function distancer.handle_message(sender, message)
-    distancer.print(distancer.green .. "Distancermessage from " .. distancer.orange .. sender .. distance.green .. " received.\n")
-    distancer.print(distancer.green .. "Message: " .. distancer.orange .. message .. distancer.green .. " .\n")
+function distancer.handle_message(channel, sender, message)
+    if(channel == dst.distancer_channelname) then
+      distancer.print(distancer.green .. "Message from " .. distancer.orange .. sender .. distance.green .. " received.\n")
+      distancer.print(distancer.green .. "Message: " .. distancer.orange .. message .. distancer.green .. " .\n")
+      
+    end -- if(channelname == 
+    
 end -- distancer.handle_message
 
 --[[
@@ -982,15 +989,22 @@ end) -- minetest.after(
 -- Join to shared Modchannel
 dst.channel = minetest.mod_channel_join(dst.channelname)
 
-minetest.register_on_modchannel_signal(function(channelname, signal)
-            distancer.handle_channel_event(channelname, signal)
+minetest.register_on_modchannel_signal(function(channel, signal)
+            distancer.handle_channel_event(channel, signal)
                                       
 end) -- minetest.register_on_modchannel_signal(
 
 
-minetest.register_on_modchannel_message(function(channelname, sender, message)
-        distancer.handle_message(sender, message)
+minetest.register_on_modchannel_message(function(channel, sender, message)
+        distancer.handle_message(channel, sender, message)
                                         
 end) -- minetest.register_on_mod_channel_message
+
+--[[
+minetest.after(5,function()
+    dst.channel:send_all("Testmail ..")
+  end
+)
+]]--
 
 distancer.show_version()
