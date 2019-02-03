@@ -926,8 +926,8 @@ minetest.register_chatcommand("dhud_measure",{
 
 minetest.register_chatcommand("dhud_waypoint",{
 
-    params = "on|off",
-    description = "Turn's the HUD for the Waypoint on or off.",
+    params = "on|off|-c [color]",
+    description = "\non turn's the Waypoint on.\noff turn's the Waypoint off.\n-c shows you the available colors for the waypoint.\n -c color set's the color for the waypoint.",
     func = function(param)                                                       
         local parameter = param:lower()
         distancer.set_hud_waypoint(parameter)
