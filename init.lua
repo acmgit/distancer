@@ -73,6 +73,9 @@ distancer.hud_waypoint = nil
 distancer.hud_waypoint_name = ""
 
 
+local pos_to_string = minetest.pos_to_string
+local string_to_pos = minetest.string_to_pos
+
 --[[
    ****************************************************************
    *******        Functions for Distancer                    ******
@@ -106,8 +109,9 @@ function distancer.split(parameter)
         
 end -- function distancer.split
 
+local dprint = minetest.display_chat_message
 function distancer.print(text)
-    minetest.display_chat_message(text)
+    dprint(text)
     
 end -- function distancer.print(
 
@@ -177,7 +181,7 @@ function distancer.show_mapblock()
     end -- if(pos_string ~= nil
         
 end -- prospector.show_mapblock(
-    
+
 function distancer.dmark(parameter)
         local command = {}
         
@@ -189,7 +193,7 @@ function distancer.dmark(parameter)
         if(command[1] == nil or command[1] == "") then
             if(distancer.marker ~= nil) then
                                          
-                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
+                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.orange .. pos_to_string(distancer.marker))
                                          
             else
                 distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set.\n")
@@ -198,15 +202,15 @@ function distancer.dmark(parameter)
     
         elseif(command[1] == "-s") then
             distancer.marker = current_position
-            distancer.hud_waypoint_name = minetest.pos_to_string(distancer.marker)
-            distancer.print(distancer.green .. "Marker set to " .. distancer.orange .. minetest.pos_to_string(distancer.marker))
+            distancer.hud_waypoint_name = pos_to_string(distancer.marker)
+            distancer.print(distancer.green .. "Marker set to " .. distancer.orange .. pos_to_string(distancer.marker))
             distancer.refresh_hud_waypoint()
                                          
         elseif(command[1] == "-m") then
             if(distancer.marker ~= nil) then
                                          
-                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. minetest.pos_to_string(distancer.marker))
-                distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. minetest.pos_to_string(current_position))
+                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. pos_to_string(distancer.marker))
+                distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. pos_to_string(current_position))
                                          
                 local distance = math.floor(vector.distance(current_position, distancer.marker))
                                          
@@ -227,9 +231,9 @@ function distancer.dmark(parameter)
                 if(tonumber(command[2]) ~= nil and tonumber(command[3]) ~= nil and tonumber(command[4]) ~= nil) then
                     local new_marker = "(" .. tonumber(command[2]) .. "," .. tonumber(command[3]) .. "," .. tonumber(command[4]) .. ")"
                     distancer.print(distancer.green .. "Marker set to : " .. distancer.orange .. new_marker .. "\n")
-                    distancer.marker = minetest.string_to_pos(new_marker)
+                    distancer.marker = string_to_pos(new_marker)
                     distancer.marker = distancer.convert_position(distancer.marker)
-                    distancer.hud_waypoint_name = minetest.pos_to_string(distancer.marker)
+                    distancer.hud_waypoint_name = pos_to_string(distancer.marker)
                     distancer.refresh_hud_waypoint()                    
                                          
                 else
@@ -243,9 +247,9 @@ function distancer.dmark(parameter)
             
             if(distancer.marker ~= nil) then
                     local distance = distancer.calc_distance_pos(distancer.marker, current_position)
-                    distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. minetest.pos_to_string(distancer.marker))
-                    distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. minetest.pos_to_string(current_position))
-                    distancer.print(distancer.green .. "The Distance between them is: " .. distancer.white .. minetest.pos_to_string(distance))
+                    distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. pos_to_string(distancer.marker))
+                    distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. pos_to_string(current_position))
+                    distancer.print(distancer.green .. "The Distance between them is: " .. distancer.white .. pos_to_string(distance))
                     distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.x .. distancer.green .. " Steps at X-Axis.")
                     distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.y .. distancer.green .. " Steps at Y-Axis.")
                     distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.z .. distancer.green .. " Steps at Z-Axis.")
@@ -286,7 +290,7 @@ function dst.send_pos(name, coord)
         if(name == myname) then
             
             if(type(coord) == "string") then
-                distancer.marker = minetest.string_to_pos(coord)
+                distancer.marker = string_to_pos(coord)
                 distancer.dmark("-w " .. coord)
                 distancer.print(distancer.green .. "Prospector set the Marker to " .. distancer.orange .. coord .. distancer.green .. " .\n")
                 
@@ -515,11 +519,11 @@ function distancer.update_hud()
     if(distancer.hud_marker ~= nil and distancer.hud_position ~= nil and distancer.hud_distance ~= nil) then
         local current_position = distancer.you:get_pos()
         current_position = distancer.convert_position(current_position)        
-        distancer.you:hud_change(distancer.hud_position, "text", minetest.pos_to_string(current_position))
+        distancer.you:hud_change(distancer.hud_position, "text", pos_to_string(current_position))
 
         if(distancer.marker ~= nil) then
-            distancer.you:hud_change(distancer.hud_marker, "text", minetest.pos_to_string(distancer.marker))
-            distancer.you:hud_change(distancer.hud_distance, "text", minetest.pos_to_string(distancer.calc_distance_pos(distancer.marker, current_position)))
+            distancer.you:hud_change(distancer.hud_marker, "text", pos_to_string(distancer.marker))
+            distancer.you:hud_change(distancer.hud_distance, "text", pos_to_string(distancer.calc_distance_pos(distancer.marker, current_position)))
         
         end -- if(distancer.hud_marker ~= nil
     
@@ -658,7 +662,7 @@ function distancer.add_hud_waypoint()
         distancer.hud_waypoint_name = "0,0,0"
         
     else
-        distancer.hud_waypoint_name = minetest.pos_to_string(distancer.marker)
+        distancer.hud_waypoint_name = pos_to_string(distancer.marker)
     
     end -- if(distancer.marker == nil
         
