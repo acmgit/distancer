@@ -132,7 +132,6 @@ end -- function convert_position
 
 function distancer.get_mapblock()
 
-    local pos_string = nil
 
     local mypos = distancer.you:get_pos()
     local x = math.floor(mypos.x+0.5)
@@ -146,7 +145,9 @@ function distancer.get_mapblock()
 end -- distancer.get_mapblock
 
 function distancer.get_hud_position()
-    distancer.print(distancer.green .. "Current Position of the HUD is:\n" .. distancer.orange .. " X = " .. distancer.hud_x * 100 .. "% of Screen.\n" .. distancer.orange .. " Y = " .. distancer.hud_y * 100 .. "% of Screen.\n")
+    distancer.print(distancer.green .. "Current Position of the HUD is:\n" .. distancer.orange .. " X = " ..
+    distancer.hud_x * 100 .. "% of Screen.\n" .. distancer.orange .. " Y = " ..
+    distancer.hud_y * 100 .. "% of Screen.\n")
 
 end -- distancer.get_hud_position
 
@@ -173,7 +174,8 @@ end -- distancer.who(
 function distancer.show_mapblock()
     local pos_string = distancer.get_mapblock()
     if(pos_string ~= nil) then
-        distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string .. distancer.green .. ")\n")
+        distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string ..
+        distancer.green .. ")\n")
 
     else
         distancer.print(distancer.red .. "Couldn't calculate the Mapblocknr.")
@@ -183,9 +185,8 @@ function distancer.show_mapblock()
 end -- prospector.show_mapblock(
 
 function distancer.dmark(parameter)
-        local command = {}
 
-        command = distancer.split(parameter)
+        local command = distancer.split(parameter)
         local current_position = distancer.you:get_pos()
         current_position = distancer.convert_position(current_position)
 
@@ -193,7 +194,8 @@ function distancer.dmark(parameter)
         if(command[1] == nil or command[1] == "") then
             if(distancer.marker ~= nil) then
 
-                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.orange .. pos_to_string(distancer.marker))
+                distancer.print(distancer.green .. "Current Marker is @ " ..
+                distancer.orange .. pos_to_string(distancer.marker))
 
             else
                 distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set.\n")
@@ -209,16 +211,20 @@ function distancer.dmark(parameter)
         elseif(command[1] == "-m") then
             if(distancer.marker ~= nil) then
 
-                distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. pos_to_string(distancer.marker))
-                distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. pos_to_string(current_position))
+                distancer.print(distancer.green .. "Current Marker is @ " ..
+                distancer.yellow .. pos_to_string(distancer.marker))
+                distancer.print(distancer.green .. "Your Position is @ " ..
+                distancer.orange .. pos_to_string(current_position))
 
                 local distance = math.floor(vector.distance(current_position, distancer.marker))
 
-                distancer.print(distancer.green .. "You are " .. distancer.light_blue .. distance .. distancer.green .. " Nodes far away.")
+                distancer.print(distancer.green .. "You are " .. distancer.light_blue .. distance ..
+                distancer.green .. " Nodes far away.")
 
             else
 
-                distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set " .. distancer.green .. " to calculate a Distance.\n")
+                distancer.print(distancer.green .. "Current Marker is " .. distancer.orange .. " not set " ..
+                distancer.green .. " to calculate a Distance.\n")
 
             end -- if(distancer.marker ~= nil
 
@@ -229,7 +235,8 @@ function distancer.dmark(parameter)
 
             else
                 if(tonumber(command[2]) ~= nil and tonumber(command[3]) ~= nil and tonumber(command[4]) ~= nil) then
-                    local new_marker = "(" .. tonumber(command[2]) .. "," .. tonumber(command[3]) .. "," .. tonumber(command[4]) .. ")"
+                    local new_marker = "(" .. tonumber(command[2]) .. "," ..
+                    tonumber(command[3]) .. "," .. tonumber(command[4]) .. ")"
                     distancer.print(distancer.green .. "Marker set to : " .. distancer.orange .. new_marker .. "\n")
                     distancer.marker = string_to_pos(new_marker)
                     distancer.marker = distancer.convert_position(distancer.marker)
@@ -247,12 +254,18 @@ function distancer.dmark(parameter)
 
             if(distancer.marker ~= nil) then
                     local distance = distancer.calc_distance_pos(distancer.marker, current_position)
-                    distancer.print(distancer.green .. "Current Marker is @ " .. distancer.yellow .. pos_to_string(distancer.marker))
-                    distancer.print(distancer.green .. "Your Position is @ " .. distancer.orange .. pos_to_string(current_position))
-                    distancer.print(distancer.green .. "The Distance between them is: " .. distancer.white .. pos_to_string(distance))
-                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.x .. distancer.green .. " Steps at X-Axis.")
-                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.y .. distancer.green .. " Steps at Y-Axis.")
-                    distancer.print(distancer.green .. "You have to go " .. distancer.light_blue .. distance.z .. distancer.green .. " Steps at Z-Axis.")
+                    distancer.print(distancer.green .. "Current Marker is @ " ..
+                    distancer.yellow .. pos_to_string(distancer.marker))
+                    distancer.print(distancer.green .. "Your Position is @ " ..
+                    distancer.orange .. pos_to_string(current_position))
+                    distancer.print(distancer.green .. "The Distance between them is: " ..
+                    distancer.white .. pos_to_string(distance))
+                    distancer.print(distancer.green .. "You have to go " ..
+                    distancer.light_blue .. distance.x .. distancer.green .. " Steps at X-Axis.")
+                    distancer.print(distancer.green .. "You have to go " ..
+                    distancer.light_blue .. distance.y .. distancer.green .. " Steps at Y-Axis.")
+                    distancer.print(distancer.green .. "You have to go " ..
+                    distancer.light_blue .. distance.z .. distancer.green .. " Steps at Z-Axis.")
             else
                 distancer.print(distancer.red .. "No Marker set.\n")
 
@@ -292,7 +305,8 @@ function dst.send_pos(name, coord)
             if(type(coord) == "string") then
                 distancer.marker = string_to_pos(coord)
                 distancer.dmark("-w " .. coord)
-                distancer.print(distancer.green .. "Prospector set the Marker to " .. distancer.orange .. coord .. distancer.green .. " .\n")
+                distancer.print(distancer.green .. "Prospector set the Marker to " ..
+                distancer.orange .. coord .. distancer.green .. " .\n")
 
             else
                 distancer.print(distancer.yellow .. "Wrong or no Coordinates given.\n")
@@ -315,7 +329,7 @@ end -- function dst.send_pos
 --]]
 
 function distancer.handle_channel_event(channel, msg)
-    local report = ""
+    local report
     if(msg >= 0) then
         if(msg == 0) then
             report = distancer.orange .. " joined with success.\n"
@@ -339,10 +353,12 @@ function distancer.handle_channel_event(channel, msg)
             report = distancer.red .. " unknown Event.\n"
 
         end
-        distancer.print(distancer.green .. "[Distancer] Channel: " .. distancer.yellow .. channel .. distancer.green .. ": " .. distancer.orange .. report)
+        distancer.print(distancer.green .. "[Distancer] Channel: " .. distancer.yellow .. channel ..
+        distancer.green .. ": " .. distancer.orange .. report)
 
       else
-        distancer.print(distancer.orange .. "[Distancer]: Illegal Message received on " .. distancer.yellow .. channel .. distancer.red .. ": " .. msg)
+        distancer.print(distancer.orange .. "[Distancer]: Illegal Message received on " ..
+        distancer.yellow .. channel .. distancer.red .. ": " .. msg)
 
     end -- if(msg >= 0
 
@@ -350,7 +366,8 @@ end -- function prospector.handle_channel_event(
 
 function distancer.handle_message(channel, sender, message)
     if(channel == dst.distancer_channelname) then
-      distancer.print(distancer.green .. "Message from " .. distancer.orange .. sender .. distance.green .. " received.\n")
+      distancer.print(distancer.green .. "Message from " .. distancer.orange .. sender ..
+      distancer.green .. " received.\n")
       distancer.print(distancer.green .. "Message: " .. distancer.orange .. message .. distancer.green .. " .\n")
 
     end -- if(channelname ==
@@ -418,8 +435,7 @@ function distancer.set_hud_measure(parameter)
 end -- distancer.set_hud_measure(
 
 function distancer.set_hud_waypoint(parameter)
-    local command = {}
-    command = distancer.split(parameter)
+    local command = distancer.split(parameter)
 
     if(command[1] == "on") then
         if(not distancer.check_hud_waypoint()) then
@@ -448,12 +464,14 @@ function distancer.set_hud_waypoint(parameter)
             if(command[2] ~= nil and distancer.hud_color[command[2]] ~= nil) then -- Color is valid
                 distancer.hud_waypoint_color = distancer.hud_color[command[2]]
                 distancer.refresh_hud_waypoint()
-                distancer.print(distancer.green .. "Color for Waypoint set to " .. distancer.orange .. command[2] .. distancer.green .. ".\n")
+                distancer.print(distancer.green .. "Color for Waypoint set to " ..
+                distancer.orange .. command[2] .. distancer.green .. ".\n")
 
             else
                 distancer.print(distancer.green .. "Waypoint Colors are:\n")
                 for key,value in pairs(distancer.hud_color) do
-                    distancer.print(distancer.yellow .. key .. distancer.green .. " = " .. distancer.orange .. string.format("0x%06X",value) .. "\n")
+                    distancer.print(distancer.yellow .. key .. distancer.green .. " = " ..
+                    distancer.orange .. string.format("0x%06X",value) .. "\n")
 
                 end -- for(key, value
 
@@ -476,9 +494,8 @@ end -- distancer.set_hud
 
 
 function distancer.dhud_set(parameter)
-    local command = {}
 
-    command = distancer.split(parameter)
+    local command = distancer.split(parameter)
 
     if(command[1] == nil or command[1] == "") then
         distancer.get_hud_position()
@@ -494,12 +511,14 @@ function distancer.dhud_set(parameter)
         position.x = x
         position.y = y
         if(not distancer.change_hud_position(position)) then
-            distancer.print(distancer.red .. "Wrong Positiondata given.\n" .. distancer.orange .. "X = " .. position.x .. "\n" .. distancer.orange .. "Y = " .. position.y .. "\n")
+            distancer.print(distancer.red .. "Wrong Positiondata given.\n" ..
+            distancer.orange .. "X = " .. position.x .. "\n" .. distancer.orange .. "Y = " .. position.y .. "\n")
 
         end -- if(not distancher.change_hud_position
 
     else -- Unknown Command given
-        distancer.print(distancer.red .. "Unknown Command for .distancer_change_hud given.\n" .. distancer.orange .. "Usage: .distancer_change_hud <> | -r | -w .X,.Y\n")
+        distancer.print(distancer.red .. "Unknown Command for .distancer_change_hud given.\n" ..
+        distancer.orange .. "Usage: .distancer_change_hud <> | -r | -w .X,.Y\n")
 
     end -- if(command[1] ==
 
@@ -523,7 +542,8 @@ function distancer.update_hud()
 
         if(distancer.marker ~= nil) then
             distancer.you:hud_change(distancer.hud_marker, "text", pos_to_string(distancer.marker))
-            distancer.you:hud_change(distancer.hud_distance, "text", pos_to_string(distancer.calc_distance_pos(distancer.marker, current_position)))
+            distancer.you:hud_change(distancer.hud_distance, "text",
+            pos_to_string(distancer.calc_distance_pos(distancer.marker, current_position)))
 
         end -- if(distancer.hud_marker ~= nil
 
@@ -545,13 +565,12 @@ function distancer.update_hud()
 end -- distancer.update_hud
 
 function distancer.dhud_speed(parameter)
-        local command = {}
-
-        command = distancer.split(parameter)
+        local command = distancer.split(parameter)
 
         if(command[1] == nil or command[1] == "") then
             if(distancer.speed > 0) then
-                distancer.print(distancer.green .. "The HUD of Distancer will update every " .. distancer.orange .. distancer.speed .. distancer.green .. " Seconds.\n")
+                distancer.print(distancer.green .. "The HUD of Distancer will update every " ..
+                distancer.orange .. distancer.speed .. distancer.green .. " Seconds.\n")
 
             else
                 distancer.print(distancer.green .. "The HUD of Distancer is off.\n")
@@ -808,7 +827,8 @@ function distancer.change_hud_position(position)
         distancer.hud_y = position.y
     end
 
-    distancer.print(distancer.green .. "Position of HUD changed to: ".. distancer.orange .. "X = " .. position.x .. " Y = " .. position.y .. distancer.green .. ".")
+    distancer.print(distancer.green .. "Position of HUD changed to: "..
+    distancer.orange .. "X = " .. position.x .. " Y = " .. position.y .. distancer.green .. ".")
 
     if(mapblock) then
         distancer.add_hud_mapblock()
@@ -854,7 +874,8 @@ function distancer.hud_speed(speed)
     if(speed >= 0 and speed ~= nil) then
         distancer.speed = speed
         distancer.update_hud()
-        distancer.print(distancer.green .. "Distancer-HUD will now update all " .. distancer.orange .. distancer.speed .. distancer.green .. " seconds.\n")
+        distancer.print(distancer.green .. "Distancer-HUD will now update all " ..
+        distancer.orange .. distancer.speed .. distancer.green .. " seconds.\n")
 
     else
         distancer.speed = 0
@@ -895,7 +916,11 @@ minetest.register_chatcommand("dshow_mapblock",{
 minetest.register_chatcommand("dmark",{
 
     params = "<> | -s | -m | -p | -w X,Y,Z",
-    description = "\n<> shows you the stored Marker.\n-s - Set's the Marker to your current Position.\n-m - Shows the Distance from your Marker.\n-p - Shows the Distance from your Marker as Vector\n-w X,Y,Z - Set's the Marker to X,Y,Z",
+    description =   "\n<> shows you the stored Marker."..
+                    "\n-s - Set's the Marker to your current Position."..
+                    "\n-m - Shows the Distance from your Marker."..
+                    "\n-p - Shows the Distance from your Marker as Vector."..
+                    "\n-w X,Y,Z - Set's the Marker to X,Y,Z",
     func = function(param)
         local parameter = param:lower()
         distancer.dmark(parameter)
@@ -931,7 +956,10 @@ minetest.register_chatcommand("dhud_measure",{
 minetest.register_chatcommand("dhud_waypoint",{
 
     params = "on|off|-c [color]",
-    description = "\non turn's the Waypoint on.\noff turn's the Waypoint off.\n-c shows you the available colors for the waypoint.\n -c color set's the color for the waypoint.",
+    description = "\non turn's the Waypoint on."..
+                  "\noff turn's the Waypoint off."..
+                  "\n-c shows you the available colors for the waypoint."..
+                  "\n -c color set's the color for the waypoint.",
     func = function(param)
         local parameter = param:lower()
         distancer.set_hud_waypoint(parameter)
@@ -954,7 +982,9 @@ minetest.register_chatcommand("dhud",{
 minetest.register_chatcommand("dhud_set",{
 
     params = "<> | -r | -w .X,.Y",
-    description = "\n<> shows you the current Position.\n-r - Resets the Position to default.\n-w 0.X,0.Y - Changes the Position in Percentage of the HUD",
+    description = "\n<> shows you the current Position."..
+                  "\n-r - Resets the Position to default."..
+                  "\n-w 0.X,0.Y - Changes the Position in Percentage of the HUD",
     func = function(param)
         local parameter = param:lower()
         distancer.dhud_set(parameter)
@@ -964,7 +994,8 @@ minetest.register_chatcommand("dhud_set",{
 
 minetest.register_chatcommand("dhud_speed",{
     param = "<> | -s Seconds",
-    description = "\n<> shows you the current Updatespeed in Seconds of the HUD.\n-s Seconds set's the new Value in Seconds. 0 turns the HUD off.",
+    description = "\n<> shows you the current Updatespeed in Seconds of the HUD."..
+                  "\n-s Seconds set's the new Value in Seconds. 0 turns the HUD off.",
     func = function(param)
         local parameter = param:lower()
         distancer.dhud_speed(parameter)
