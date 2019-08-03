@@ -48,4 +48,5 @@ nothing<br>
 
 ## install 
 Move the folder to your clientmods directory of your minetest-folder.<br>
-Then activate the mod in your mod.conf.<br>
+Then activate the mod in your mods.conf.<br>
+Important: Not the mod.conf inside the mod!!<br>
