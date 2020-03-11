@@ -279,73 +279,73 @@ end -- distancer.dmark(
 
 function distancer.safe_dead()
     local current_position
-    
+
     distancer.you = minetest.localplayer
     current_position = distancer.you:get_pos()
     current_position = distancer.convert_position(current_position)
-    
+
     if(distancer.marker ~= nil) then
         distancer.old_marker = distancer.marker
         distancer.print(distancer.green .. "Old Markerposition saved.")
-        
+
     end -- if(distancer.marker
-    
+
     distancer.marker = current_position
     distancer.print(distancer.green .. "Your Position of dead is set to the marker.")
-    
+
     if(distancer.check_hud_waypoint()) then
         distancer.set_hud_waypoint("off")
         distancer.set_hud_waypoint("on")
-        
+
     end -- if(distancer.check_hud_waypoint
-    
+
 end -- distancer.safe_dead(
-    
+
 function distancer.restore_marker()
     if(distancer.old_marker ~= nil) then
         distancer.marker = distancer.old_marker
         distancer.print(distancer.green .. "Old Markerposition restored.")
         distancer.old_marker = nil
-        
+
     else
         distancer.print(distancer.red .. "No old Markerposition to restore found.")
-        
+
     end -- if(distancer.old_marker
-    
+
 end -- distancer.restore_marker(
 
 function distancer.change_safe_dead(parameter)
     if(parameter == "") then
         if(distancer.safe_dead_state) then
             distancer.print(distancer.green .. "The safe_dead_status of the Distancer is on.")
-            
+
         else
             distancer.print(distancer.orange .. "The safe_dead_status of the Distancer is off.")
-            
+
         end -- if(distancer.safe_dead_state
-        
+
     elseif(parameter == "on") then
         if(distancer.safe_dead_state) then
             distancer.print(distancer.green .. "The safe_dead_status is already on.")
-            
+
         else
             distancer.safe_dead_state = true
             distancer.print(distancer.green .. "Turning the safe_dead_status om.")
-            
+
         end -- if(distancer.safe_dead_state
-        
+
     elseif(parameter == "off") then
         if(distancer.safe_dead_state) then
             distancer.print(distancer.orange .. "Turning the safe_dead_status off.")
             distancer.safe_dead_state = false
-            
+
         else
             distancer.print(distancer.orange .. "The safe_dead_status is already off.")
-            
+
         end -- if(distancer.safe_dead_state
-        
+
     end -- if(parameter ==
-    
+
 end -- distancer.change_safe_dead()
 
 function distancer.show_version()
@@ -987,7 +987,7 @@ minetest.register_chatcommand("dshow_mapblock",{
 }) -- chatcommand show_mapblock
 
 minetest.register_chatcommand("dsafe_dead",{
-                                            
+
     params = "<> | on | off",
     description = "Turns the safe_dead on or of or show's the status of safe_dead.",
     func = function(param)
@@ -1118,7 +1118,7 @@ end) -- minetest.after(
 minetest.register_on_death(function()
     if(distancer.safe_dead_state) then
         distancer.safe_dead()
-                          
+
     end
 
 end) -- minetest.register_on_death(
