@@ -189,7 +189,16 @@ end -- prospector.show_mapblock(
 function distancer.dmark(parameter)
 
         local command = distancer.split(parameter)
-        local current_position = distancer.you:get_pos()
+        local current_position
+        if(distancer.you ~= nil) then
+            current_position = distancer.you:get_pos()
+            
+        else
+            current_position = minetest.localplayer:get_pos()
+            distancer.you = minetest.localplayer
+            
+        end
+        
         current_position = distancer.convert_position(current_position)
 
         -- No Node or Index given
