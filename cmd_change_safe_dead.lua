@@ -28,8 +28,9 @@ distancer["change_safe_dead"] = function(parameter)
 
         end -- if(distancer.safe_dead_state
     else
-        distancer.print(distancer.orange .. "change_safe_dead: unknown Parameter " .. distancer.red .. parameter[2] .. distancer.orange .. ".")
-        
+        distancer.print(distancer.orange .. "change_safe_dead: unknown Parameter " ..
+                        distancer.red .. parameter[2] .. distancer.orange .. ".")
+
     end -- if(parameter ==
 
 end -- distancer.change_safe_dead()

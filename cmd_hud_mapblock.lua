@@ -3,7 +3,7 @@ distancer["hud_mapblock"] = function(parameter)
         if(not distancer.check_hud_mapblock()) then
             distancer.add_hud_mapblock()
             distancer.print(distancer.green .. "Distancer: Hud for Mapblock on.")
-            
+
         else
             distancer.print(distancer.orange .. "HUD for Mapblock already on.")
 
@@ -13,7 +13,7 @@ distancer["hud_mapblock"] = function(parameter)
         if(distancer.check_hud_mapblock()) then
             distancer.remove_hud_mapblock()
             distancer.print(distancer.green .. "Distancer: Hud for Mapblock off.")
-            
+
         else
             distancer.print(distancer.orange .. "HUD for Mapblock isn't on.")
 

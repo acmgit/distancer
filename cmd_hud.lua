@@ -6,22 +6,22 @@ distancer["hud"] = function(parameter)
 
     else
         print("Hud Parameter: " .. parameter[2])
-        
+
         if(distancer["hud_mapblock"]) then
             distancer["hud_mapblock"]({"hud_mapblock", parameter[2]})
-            
+
         end
-        
+
         if(distancer["hud_measure"]) then
             distancer["hud_measure"]({"hud_measure", parameter[2]})
-            
+
         end
-        
+
         if(distancer["hud_waypoint"]) then
             distancer["hud_waypoint"]({"hud_waypoint", parameter[2]})
-            
+
         end
-        
+
     end
 
 end -- distancer.set_hud

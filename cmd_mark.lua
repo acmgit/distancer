@@ -4,7 +4,7 @@ local string_to_pos = minetest.string_to_pos
 distancer["mark"] = function(parameter)
         --local command = distancer.split(parameter)
         local current_position = minetest.localplayer:get_pos()
-                    
+
         current_position = distancer.convert_position(current_position)
 
         -- No Node or Index given
@@ -51,7 +51,8 @@ distancer["mark"] = function(parameter)
                 distancer.print(distancer.red .. "No Position to set Marker given.\n")
 
             else
-                if(tonumber(parameter[3]) ~= nil and tonumber(parameter[4]) ~= nil and tonumber(parameter[5]) ~= nil) then
+                if(tonumber(parameter[3]) ~= nil and tonumber(parameter[4]) ~= nil and
+                   tonumber(parameter[5]) ~= nil) then
                     local new_marker = "(" .. tonumber(parameter[3]) .. "," ..
                     tonumber(parameter[4]) .. "," .. tonumber(parameter[5]) .. ")"
                     distancer.print(distancer.green .. "Marker set to : " .. distancer.orange .. new_marker .. "\n")

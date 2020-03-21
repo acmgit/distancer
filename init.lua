@@ -128,23 +128,24 @@ end -- function distancer.split
     Check if the command is valid
 --]]
 function distancer.check(cmd)
-       
+
         if(distancer[cmd[1]] ~= nil) then
         -- Command is valid, execute it with parameter
            distancer[cmd[1]](cmd)
-          
+
         else -- A command is given, but
         -- Command not found, report it.
             if(cmd[1] ~= nil) then
-                distancer.print(distancer.red .. "Distancer: Unknown Command \"" ..  distancer.orange .. cmd[1] .. distancer.red .. "\".")
-                
+                distancer.print(distancer.red .. "Distancer: Unknown Command \"" ..
+                                distancer.orange .. cmd[1] .. distancer.red .. "\".")
+
             else
                 distancer["help"]()
-                
+
             end -- if(cmd[1]
-            
+
         end -- if(distancer[cmd[1
-            
+
 end -- function distancer.check(cmd
 
 --[[
@@ -194,7 +195,7 @@ function distancer.get_mapblock()
     return pos_string
 
 end -- distancer.get_mapblock
-       
+
 --[[
    ****************************************************************
    *******           Function safe_dead()                    ******
@@ -782,11 +783,11 @@ minetest.register_chatcommand("dis",{
                 end
                 local command = distancer.split(cmd)
                 distancer.check(command)
-                                    
+
             end -- function
-                                    
+
 }) -- minetest.register_chatcommand("dis
-                                    
+
 
 --[[
    ****************************************************************
