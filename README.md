@@ -1,33 +1,40 @@
 # Distancer
 Client-Side-Mod for Minetest to calculate and measure Distances.<br>
 ![Screenshot 1](screenshot.png)
-
+<br>
 ## Description
 This Mod helps you, to measure Distances in Minetest.<br>
 Be carefull, this Version works only with Minetest Version 5.x.x.
-
-## Commands
-.dmark <> | Shows you the current stored Marker.<br>
-.dmark -s | Set's the marker to your current Position.<br>
-.dmark -m | Shows you the Distance between your current Position and the (valid) Marker.<br>
-.dmark -p | Shows you the Vector of the Distance between your current Position and the (valid) Marker.<br>
-.dmark -w X,Y,Z | Writes a manual given Position to the Marker. Example: .marker -w 50,-10,100 - Set's the Marker to the Position 50,-10,100.<br>
-
-## HUD-Commands
-.dhud on|off                | Turns all HUD's of Distancer on or off.<br>
-.dhud_mapblock on|off       | Turns the HUD for the current Mapblock on or off.<br>
-.dhud_measure on|off        | Turns the HUD for the Marker, Position and Distance on or off<br>
-.dhud_waypoint on|off       | Turns the HUD for the Waypoint (Marker) on or off<br>
-.dhud_waypoint -c <color>   | Changes the Color of the Waypoint to <color> or lists the available colors if empty or wrong
-.dhud_set <>                | Show's the current Position of the HUD in the Chat.
-.dhud_set -r                | Reset's the Position of the HUD to default.
-.dhud_set -w .x,.y          | Changes the Position of the HUD on the Screen<br>
-.dhud_speed <>              | Shows you the current Speed in Seconds the HUD will refresh.<br>
-.dhud_speed Number          | Set's the current Refreshspeed of the HUD to Number Seconds.<br>
-
-## Other Commands
-.dshow_mapblock       | Shows you the Mapblocknumber of your current Position.<br>
-.dwho                 | Lists the Names of the (online) Player.<br>
+<br>
+Fully revised, more modularity and using of command-pattern.
+<br>
+## General Commands
+.dis help                                 - Shows you a help of the commands.
+.dis who                                  - Shows you, who is online.
+.dis change_safe_dead <> | on | off       - Turns the automatic position-store of your dead on or off.
+.dis restore_marker                       - Swaps the old waypoint with the deadposition.
+<br>
+## Marker Commands
+.dis mark <> | -s | -m | -p | -w X,Y,Z
+.dis mark -s                              - Set's the marker to your current position.
+.dis mark -m                              - Shows you the distance between the marker anc your current position.
+.dis mark -p                              - Shows you the distance between the marker anc your current position as vector.
+.dis mark -w X,Y,Z                        - Set's the marker to the given position.
+<br>
+## HUD Commands
+.dis hud on | off                         - Turns all huds of distancer on or off.
+.dis hud_mapblock on | off                - Turns the hud for the mapblock on or off.
+.dis hud_measure on | off                 - Turns the hud to measure distances on or off.
+.dis hud_waypoint on | off                - Turns the hud for the waypoint on or off.
+<br>
+.dis hud_set <> | -r | -w .X,.Y           - Commands for the hud-position.
+.dis hud_set <>                           - Shows the current hud-position.
+.dis hud_set -r                           - Resets the position of the hud to default.
+.dis hud_set -w 0.X,0.Y                   - Changes the position in percentage of the HUD to 0.X,0.Y.
+<br>
+.dis hud_speed <> | -s Seconds            - Commands for the hud-update-speed.
+.dis hud_speed <>                         - Shows the current update-speed in seconds.
+.dis hud_speed -s Seconds                 - Set's the current update-delay to seconds.
 
 ## for Modwriter
 With the Version 2.7 or higher, the Distancer has a API for other mods.<br>
