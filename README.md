@@ -9,33 +9,33 @@ Be carefull, this Version works only with Minetest Version 5.x.x.
 Fully revised, more modularity and using of command-pattern.
 <br>
 ## General Commands
-.dis help                                 - Shows you a help of the commands.
-.dis who                                  - Shows you, who is online.
-.dis change_safe_dead <> | on | off       - Turns the automatic position-store of your dead on or off.
-.dis restore_marker                       - Swaps the old waypoint with the deadposition.
+.dis help                                 - Shows you a help of the commands.<br>
+.dis who                                  - Shows you, who is online.<br>
+.dis change_safe_dead <> | on | off       - Turns the automatic position-store of your dead on or off.<br>
+.dis restore_marker                       - Swaps the old waypoint with the deadposition.<br>
 <br>
 ## Marker Commands
-.dis mark <> | -s | -m | -p | -w X,Y,Z
-.dis mark -s                              - Set's the marker to your current position.
-.dis mark -m                              - Shows you the distance between the marker anc your current position.
-.dis mark -p                              - Shows you the distance between the marker anc your current position as vector.
-.dis mark -w X,Y,Z                        - Set's the marker to the given position.
+.dis mark <> | -s | -m | -p | -w X,Y,Z<br>
+.dis mark -s                              - Set's the marker to your current position.<br>
+.dis mark -m                              - Shows you the distance between the marker anc your current position.<br>
+.dis mark -p                              - Shows you the distance between the marker anc your current position as vector.<br>
+.dis mark -w X,Y,Z                        - Set's the marker to the given position.<br>
 <br>
 ## HUD Commands
-.dis hud on | off                         - Turns all huds of distancer on or off.
-.dis hud_mapblock on | off                - Turns the hud for the mapblock on or off.
-.dis hud_measure on | off                 - Turns the hud to measure distances on or off.
-.dis hud_waypoint on | off                - Turns the hud for the waypoint on or off.
+.dis hud on | off                         - Turns all huds of distancer on or off.<br>
+.dis hud_mapblock on | off                - Turns the hud for the mapblock on or off.<br>
+.dis hud_measure on | off                 - Turns the hud to measure distances on or off.<br>
+.dis hud_waypoint on | off                - Turns the hud for the waypoint on or off.<br>
 <br>
-.dis hud_set <> | -r | -w .X,.Y           - Commands for the hud-position.
-.dis hud_set <>                           - Shows the current hud-position.
-.dis hud_set -r                           - Resets the position of the hud to default.
-.dis hud_set -w 0.X,0.Y                   - Changes the position in percentage of the HUD to 0.X,0.Y.
+.dis hud_set <> | -r | -w .X,.Y           - Commands for the hud-position.<br>
+.dis hud_set <>                           - Shows the current hud-position.<br>
+.dis hud_set -r                           - Resets the position of the hud to default.<br>
+.dis hud_set -w 0.X,0.Y                   - Changes the position in percentage of the HUD to 0.X,0.Y.<br>
 <br>
-.dis hud_speed <> | -s Seconds            - Commands for the hud-update-speed.
-.dis hud_speed <>                         - Shows the current update-speed in seconds.
-.dis hud_speed -s Seconds                 - Set's the current update-delay to seconds.
-
+.dis hud_speed <> | -s Seconds            - Commands for the hud-update-speed.<br>
+.dis hud_speed <>                         - Shows the current update-speed in seconds.<br>
+.dis hud_speed -s Seconds                 - Set's the current update-delay to seconds.<br>
+<br>
 ## for Modwriter
 With the Version 2.7 or higher, the Distancer has a API for other mods.<br>
 
