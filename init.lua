@@ -12,12 +12,14 @@ dst = {}
 local distancer = {}
 
 distancer.version = 2
-distancer.revision = 7
+distancer.revision = 8
 distancer.modname = "Distancer"
 
 distancer.you = nil -- Player
 distancer.marker = nil
+distancer.old_marker = nil
 distancer.speed = .5 -- Update every distancer.speed seconds
+distancer.safe_dead_state = true
 
 -- Colors for Chat
 distancer.green = minetest.get_color_escape_sequence('#00FF00')
@@ -187,7 +189,16 @@ end -- prospector.show_mapblock(
 function distancer.dmark(parameter)
 
         local command = distancer.split(parameter)
-        local current_position = distancer.you:get_pos()
+        local current_position
+        if(distancer.you ~= nil) then
+            current_position = distancer.you:get_pos()
+            
+        else
+            current_position = minetest.localplayer:get_pos()
+            distancer.you = minetest.localplayer
+            
+        end
+        
         current_position = distancer.convert_position(current_position)
 
         -- No Node or Index given
@@ -274,6 +285,77 @@ function distancer.dmark(parameter)
         end -- if(command[1] ==
 
 end -- distancer.dmark(
+
+function distancer.safe_dead()
+    local current_position
+
+    distancer.you = minetest.localplayer
+    current_position = distancer.you:get_pos()
+    current_position = distancer.convert_position(current_position)
+
+    if(distancer.marker ~= nil) then
+        distancer.old_marker = distancer.marker
+        distancer.print(distancer.green .. "Old Markerposition saved.")
+
+    end -- if(distancer.marker
+
+    distancer.marker = current_position
+    distancer.print(distancer.green .. "Your Position of dead is set to the marker.")
+
+    if(distancer.check_hud_waypoint()) then
+        distancer.set_hud_waypoint("off")
+        distancer.set_hud_waypoint("on")
+
+    end -- if(distancer.check_hud_waypoint
+
+end -- distancer.safe_dead(
+
+function distancer.restore_marker()
+    if(distancer.old_marker ~= nil) then
+        distancer.marker = distancer.old_marker
+        distancer.print(distancer.green .. "Old Markerposition restored.")
+        distancer.old_marker = nil
+
+    else
+        distancer.print(distancer.red .. "No old Markerposition to restore found.")
+
+    end -- if(distancer.old_marker
+
+end -- distancer.restore_marker(
+
+function distancer.change_safe_dead(parameter)
+    if(parameter == "") then
+        if(distancer.safe_dead_state) then
+            distancer.print(distancer.green .. "The safe_dead_status of the Distancer is on.")
+
+        else
+            distancer.print(distancer.orange .. "The safe_dead_status of the Distancer is off.")
+
+        end -- if(distancer.safe_dead_state
+
+    elseif(parameter == "on") then
+        if(distancer.safe_dead_state) then
+            distancer.print(distancer.green .. "The safe_dead_status is already on.")
+
+        else
+            distancer.safe_dead_state = true
+            distancer.print(distancer.green .. "Turning the safe_dead_status om.")
+
+        end -- if(distancer.safe_dead_state
+
+    elseif(parameter == "off") then
+        if(distancer.safe_dead_state) then
+            distancer.print(distancer.orange .. "Turning the safe_dead_status off.")
+            distancer.safe_dead_state = false
+
+        else
+            distancer.print(distancer.orange .. "The safe_dead_status is already off.")
+
+        end -- if(distancer.safe_dead_state
+
+    end -- if(parameter ==
+
+end -- distancer.change_safe_dead()
 
 function distancer.show_version()
     print("[CSM-MOD]" .. distancer.modname .. " v " .. distancer.version .. "." .. distancer.revision .. " loaded. \n")
@@ -913,6 +995,27 @@ minetest.register_chatcommand("dshow_mapblock",{
 
 }) -- chatcommand show_mapblock
 
+minetest.register_chatcommand("dsafe_dead",{
+
+    params = "<> | on | off",
+    description = "Turns the safe_dead on or of or show's the status of safe_dead.",
+    func = function(param)
+        local parameter = param:lower()
+        distancer.change_safe_dead(parameter)
+
+    end -- function
+
+}) -- chatcommand dsafe_dead
+
+minetest.register_chatcommand("drestore_marker",{
+    param = "<>",
+    description = "Try to restore the old Postion before dead on the Marker.",
+    func = function()
+        distancer.restore_marker()
+
+    end -- function
+})
+
 minetest.register_chatcommand("dmark",{
 
     params = "<> | -s | -m | -p | -w X,Y,Z",
@@ -1020,6 +1123,14 @@ minetest.after(distancer.speed, function()
     distancer.update_hud()
 
 end) -- minetest.after(
+
+minetest.register_on_death(function()
+    if(distancer.safe_dead_state) then
+        distancer.safe_dead()
+
+    end
+
+end) -- minetest.register_on_death(
 
 -- Join to shared Modchannel
 dst.channel = minetest.mod_channel_join(dst.channelname)
