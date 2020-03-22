@@ -130,7 +130,7 @@ end -- function distancer.split
     Check if the command is valid
 --]]
 function distancer.check(cmd)
-    
+
         if(cmd ~= nil and cmd[1] ~= nil) then
             if(distancer[cmd[1]] ~= nil) then
                 -- Command is valid, execute it with parameter
@@ -145,20 +145,20 @@ function distancer.check(cmd)
                 else
                     if(distancer["help"]) then
                         distancer["help"]()
-                    
+
                     else
                         distancer.print(distancer.red .. "Unknown Command. No helpsystem available.")
-                    
+
                     end --if(distancer["help"]
 
                 end -- if(cmd[1]
 
             end -- if(distancer[cmd[1
-                
+
         else
-            prospector.print(prospector.red .. "No Command for Distancer given.")
-            prospector.print(prospector.red .. "Try .dis help.")
-            
+            distancer.print(distancer.red .. "No Command for Distancer given.")
+            distancer.print(distancer.red .. "Try .dis help.")
+
         end -- if(not cmd)
 
 end -- function distancer.check(cmd
