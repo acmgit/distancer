@@ -3,9 +3,9 @@ distancer.register_help({
                             Usage = ".dis hud_speed <> | -s Seconds",
                             Description = "Changes or sets the speed of update for the HUD.",
                             Parameter = "<> | -s Seconds" .. distancer.green .. "." ..
-                                        "\n" .. distancer.orange .. "<> - " .. 
+                                        "\n" .. distancer.orange .. "<> - " ..
                                         distancer.green .. "shows you the current Updatespeed in Seconds of the HUD." ..
-                                        "\n" .. distancer.orange .. "-s Seconds - " .. 
+                                        "\n" .. distancer.orange .. "-s Seconds - " ..
                                         distancer.green .. "Seconds set's the new Value in Seconds. 0 freeze the HUD."
                         }
                        )

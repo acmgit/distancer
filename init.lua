@@ -244,14 +244,14 @@ end -- distancer.version
     Registers a new Entry in the Helpsystem for an Command.
 ]]--
 function distancer.register_help(entry)
-    
+
     distancer.helpsystem[entry.Name] = {
                                 Name = entry.Name,
                                 Usage = entry.Usage,
                                 Description = entry.Description,
                                 Parameter = entry.Parameter
                             }
-            
+
 end
 
 --[[

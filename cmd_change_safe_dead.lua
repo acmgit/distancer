@@ -3,9 +3,12 @@ distancer.register_help({
                             Usage = ".dis change_safe_dead <> | on | off",
                             Description = "Turns the safe_dead-mode on or off or show's the status of safe_dead-mode.",
                             Parameter = "<> | on | off" .. distancer.green .. "." ..
-                                        "\n" .. distancer.orange .. "<> - " .. distancer.green .. "shows the current state of the safe_dead-mode." ..
-                                        "\n" .. distancer.orange .. "on" .. distancer.green.. " - Turn's the safe_dead_mode on." ..
-                                        "\n" .. distancer.orange .. "off" .. distancer.green .. " - Turn's the safe_dead_mode off."
+                                        "\n" .. distancer.orange .. "<> - " ..
+                                        distancer.green .. "shows the current state of the safe_dead-mode." ..
+                                        "\n" .. distancer.orange .. "on" ..
+                                        distancer.green.. " - Turn's the safe_dead_mode on." ..
+                                        "\n" .. distancer.orange .. "off" ..
+                                        distancer.green .. " - Turn's the safe_dead_mode off."
                         }
                        )
 
