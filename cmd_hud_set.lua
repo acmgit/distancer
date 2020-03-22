@@ -1,3 +1,14 @@
+distancer.register_help({
+                            Name = "hud_set",
+                            Usage = ".dis hud_set <> | -r | -w .X,.Y",
+                            Description = "Sets or shows the Position of the Huds.",
+                            Parameter = "<> | -r | -w .X,.Y" .. distancer.green .. "." ..
+                                        "\n" .. distancer.orange .. "<> - " .. distancer.green .. "shows you the current Position." ..
+                                        "\n" .. distancer.orange .. "-r - " .. distancer.green .. "Resets the Position to default." ..
+                                        "\n" .. distancer.orange .. "-w 0.X,0.Y - " .. distancer.green .. "Changes the Position in Percentage of the HUD"
+                        }
+                       )
+
 distancer["hud_set"] = function(parameter)
     if(parameter[2] == nil or parameter[2] == "") then
         distancer.get_hud_position()

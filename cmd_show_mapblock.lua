@@ -1,3 +1,11 @@
+distancer.register_help({
+                            Name = "show_mapblock",
+                            Usage = ".dis show_mapblock",
+                            Description = "Shows the current Mapblock, where you are.",
+                            Parameter = ""
+                        }
+                       )
+
 distancer["show_mapblock"] = function()
     local pos_string = distancer.get_mapblock()
     if(pos_string ~= nil) then

@@ -1,3 +1,11 @@
+distancer.register_help({
+                            Name = "who",
+                            Usage = ".dis who",
+                            Description = "Shows you all online Playernames.",
+                            Parameter = ""
+                        }
+                       )
+
 distancer["who"] = function()
     local online = minetest.get_player_names()
     if(online == nil) then

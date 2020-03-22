@@ -1,3 +1,13 @@
+distancer.register_help({
+                            Name = "hud_waypoint",
+                            Usage = ".dis hud_waypoint on | off",
+                            Description = "Turn's the HUD for the waypoint on or off.",
+                            Parameter = "on | off" .. distancer.green .. "." ..
+                                        "\n" .. distancer.orange .. "on" .. distancer.green.. " - Turn's the HUD on." ..
+                                        "\n" .. distancer.orange .. "off" .. distancer.green .. " - Turn's the HUD off."
+                        }
+                       )
+
 distancer["hud_waypoint"] = function(parameter)
     if(parameter[2] == "on") then
         if(not distancer.check_hud_waypoint()) then

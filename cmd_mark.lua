@@ -1,6 +1,20 @@
 local pos_to_string = minetest.pos_to_string
 local string_to_pos = minetest.string_to_pos
 
+
+distancer.register_help({
+                            Name = "mark",
+                            Usage = ".dis mark <> | -s | -m | -p | -w X,Y,Z",
+                            Description = "Commands for the marker.",
+                            Parameter = "<> | -s | -m | -p | -w X,Y,Z" .. distancer.green .. "." ..
+                                        "\n" .. distancer.orange .. "<> - " .. distancer.green .. "shows you the stored Marker." ..
+                                        "\n" .. distancer.orange .. "-s - " .. distancer.green .. "Set's the Marker to your current Position." ..
+                                        "\n" .. distancer.orange .. "-m - " .. distancer.green .. "Shows the Distance to your Marker." ..
+                                        "\n" .. distancer.orange .. "-p - " .. distancer.green .. "Shows the Distance to your Marker as Vector." ..
+                                        "\n" .. distancer.orange .. "-w X,Y,Z - " .. distancer.green .. "X,Y,Z - Set's the Marker to X,Y,Z."
+                        }
+                       )
+
 distancer["mark"] = function(parameter)
         --local command = distancer.split(parameter)
         local current_position = minetest.localplayer:get_pos()

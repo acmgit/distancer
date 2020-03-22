@@ -12,7 +12,7 @@ dst = {}
 distancer = {}
 
 distancer.version = 3
-distancer.revision = 0
+distancer.revision = 1
 distancer.modname = "Distancer"
 
 distancer.marker = nil
@@ -40,6 +40,8 @@ dst.rev = distancer.revision
 dst.mname = distancer.modname
 
 dst.channelname = "distancer"
+
+distancer.helpsystem = {}
 
 distancer.hud_color = {
                         ["green"]        = 0x00FF00,
@@ -234,6 +236,23 @@ function distancer.show_version()
     print("[CSM-MOD]" .. distancer.modname .. " v " .. distancer.version .. "." .. distancer.revision .. " loaded. \n")
 
 end -- distancer.version
+
+--[[
+   ****************************************************************
+   *******         Function register_help()                  ******
+   ****************************************************************
+    Registers a new Entry in the Helpsystem for an Command.
+]]--
+function distancer.register_help(entry)
+    
+    distancer.helpsystem[entry.Name] = {
+                                Name = entry.Name,
+                                Usage = entry.Usage,
+                                Description = entry.Description,
+                                Parameter = entry.Parameter
+                            }
+            
+end
 
 --[[
    ****************************************************************
@@ -822,9 +841,7 @@ minetest.register_on_modchannel_message(function(channel, sender, message)
 
 end) -- minetest.register_on_mod_channel_message
 
-distancer.show_version()
-
-dofile("distancer:cmd_help.lua")
+dofile("distancer:cmd_help.lua") -- Build the Helpsystem
 dofile("distancer:cmd_who.lua")
 dofile("distancer:cmd_show_mapblock.lua")
 dofile("distancer:cmd_change_safe_dead.lua")
@@ -836,3 +853,5 @@ dofile("distancer:cmd_hud_waypoint.lua")
 dofile("distancer:cmd_hud_set.lua")
 dofile("distancer:cmd_hud_speed.lua")
 dofile("distancer:cmd_hud.lua")
+
+distancer.show_version()

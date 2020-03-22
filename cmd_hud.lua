@@ -1,3 +1,14 @@
+distancer.register_help({
+                            Name = "hud",
+                            Usage = ".dis hud on | off",
+                            Description = "Turn's all Distancer-HUD's on or off.",
+                            Parameter = "on | off" .. distancer.green .. "." ..
+                                        "\n" .. distancer.orange .. "on" .. distancer.green.. " - Turn's all Distancer-HUD's on." ..
+                                        "\n" .. distancer.orange .. "off" .. distancer.green .. " - Turn's all Distancer-HUD's off."
+                        }
+                       )
+
+
 distancer["hud"] = function(parameter)
 
     if(parameter[2] == "" or parameter[2] == nil) then

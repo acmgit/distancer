@@ -1,3 +1,13 @@
+distancer.register_help({
+                            Name = "hud_mapblock",
+                            Usage = ".dis hud_mapblock on | off",
+                            Description = "Turn's the HUD for the mapblock on or off.",
+                            Parameter = "on | off" .. distancer.green .. "." ..
+                                        "\n" .. distancer.orange .. "on" .. distancer.green.. " - Turn's the HUD on." ..
+                                        "\n" .. distancer.orange .. "off" .. distancer.green .. " - Turn's the HUD off."
+                        }
+                       )
+
 distancer["hud_mapblock"] = function(parameter)
     if(parameter[2] == "on") then
         if(not distancer.check_hud_mapblock()) then
