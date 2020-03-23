@@ -291,9 +291,13 @@ function dst.send_pos(name, coord)
 
             if(type(coord) == "string") then
                 distancer.marker = string_to_pos(coord)
-                distancer.dmark("-w " .. coord)
-                distancer.print(distancer.green .. "Prospector set the Marker to " ..
-                distancer.orange .. coord .. distancer.green .. " .\n")
+                if(distancer["mark"]) then
+                    distancer["mark"]({"-w " .. coord})
+                    distancer.print(distancer.green .. "Prospector set the Marker to " ..
+                    distancer.orange .. coord .. distancer.green .. " .\n")
+                else
+                    distancer.print(distancer.red .. "Command Mark not available.")
+                end
 
             else
                 distancer.print(distancer.yellow .. "Wrong or no Coordinates given.\n")
