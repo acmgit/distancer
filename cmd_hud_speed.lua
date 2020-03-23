@@ -23,7 +23,8 @@ distancer["hud_speed"] = function(parameter)
         else
             local newspeed = tonumber(parameter[3]) or 0
             distancer.hud_set_speed(newspeed)
-
+            distancer.print(distancer.orange .. "The Huds are freezed.")
+            
         end -- if(command[1] ==
 
 end -- distancer.dhug_speed

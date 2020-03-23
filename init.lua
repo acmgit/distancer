@@ -66,12 +66,15 @@ distancer.hud_x = 0.9
 distancer.hud_y = 0.7
 
 -- Values on the Hud
+distancer.hud_mapblock_status = false
 distancer.hud_mapblock_label = nil
 distancer.hud_mapblock_value = nil
+distancer.hud_measure_status = false
 distancer.hud_distance_label = nil
 distancer.hud_marker = nil
 distancer.hud_position = nil
 distancer.hud_distance = nil
+distancer.hud_waypoint_status = false
 distancer.hud_waypoint_value = nil
 distancer.hud_waypoint_name = ""
 
@@ -291,13 +294,10 @@ function dst.send_pos(name, coord)
 
             if(type(coord) == "string") then
                 distancer.marker = string_to_pos(coord)
-                if(distancer["mark"]) then
-                    distancer["mark"]({"-w " .. coord})
-                    distancer.print(distancer.green .. "Prospector set the Marker to " ..
-                    distancer.orange .. coord .. distancer.green .. " .\n")
-                else
-                    distancer.print(distancer.red .. "Command Mark not available.")
-                end
+                local cmd = distancer.split("mark -w " .. coord)
+                distancer.check(cmd)
+                distancer.print(distancer.orange .. name .. distancer.green .. " set the Marker to " ..
+                distancer.orange .. coord .. distancer.green .. " .\n")
 
             else
                 distancer.print(distancer.yellow .. "Wrong or no Coordinates given.\n")
@@ -380,7 +380,7 @@ end -- distancer.handle_message
 ]]--
 function distancer.update_hud()
 
-    if(distancer.hud_mapblock_value ~= false) then
+    if(distancer.hud_mapblock_status) then
 
         if(distancer.hud_mapblock_value ~= nil) then
             minetest.localplayer:hud_change(distancer.hud_mapblock_value, "text", distancer.get_mapblock())
@@ -389,7 +389,7 @@ function distancer.update_hud()
 
     end -- if(distancer_hud_mapblock
 
-    if(distancer.hud_marker ~= nil and distancer.hud_position ~= nil and distancer.hud_distance ~= nil) then
+    if(distancer.hud_measure_status) then
         local current_position = minetest.localplayer:get_pos()
         current_position = distancer.convert_position(current_position)
         minetest.localplayer:hud_change(distancer.hud_position, "text", pos_to_string(current_position))
@@ -403,7 +403,7 @@ function distancer.update_hud()
 
     end -- if(hud_marker and hud_position and hud_distance
 
-    if(distancer.hud_waypoint_value ~= nil) then
+    if(distancer.hud_waypoint_status) then
         minetest.localplayer:hud_change(distancer.hud_waypoint_value, "world_pos", distancer.marker)
 
     end -- if(distancer.hud_waypoint_value ~= nil
@@ -461,7 +461,9 @@ function distancer.add_hud_mapblock()
         direction = 1
 
     }) -- minetest.localplayer:hud_add
-
+    
+    distancer.hud_mapblock_status = true
+    
 end -- function add_hud_mapblock()
 
 --[[
@@ -523,7 +525,9 @@ function distancer.add_hud_measure()
         direction = 1
 
     }) -- minetest.localplayer:hud_add
-
+    
+    distancer.hud_measure_status = true
+    
 end -- distancer.add_hud_measure()
 
 --[[
@@ -550,7 +554,9 @@ function distancer.add_hud_waypoint()
         text = " Meter",
         world_pos = {x=0, y=0, z=0},
     }) -- minetest.localplayer:hud_add
-
+    
+    distancer.hud_waypoint_status = true
+    
 end -- distancer.add_hud_waypoint()
 
 --[[
@@ -563,7 +569,8 @@ function distancer.remove_hud_mapblock()
     minetest.localplayer:hud_remove(distancer.hud_mapblock_value)
     distancer.hud_mapblock_label = nil
     distancer.hud_mapblock_value = nil
-
+    distancer.hud_mapblock_status = false
+    
 end -- function distancer.remove_hud_mapblock
 
 --[[
@@ -580,6 +587,7 @@ function distancer.remove_hud_measure()
     distancer.hud_marker = nil
     distancer.hud_position = nil
     distancer.hud_distance = nil
+    distancer.hud_measure_status = false
 
 end -- function distancer.remove_hud_measure
 
@@ -591,7 +599,8 @@ end -- function distancer.remove_hud_measure
 function distancer.remove_hud_waypoint()
     minetest.localplayer:hud_remove(distancer.hud_waypoint_value)
     distancer.hud_waypoint_value = nil
-
+    distancer.hud_waypoint_status = false
+    
 end -- function distancer.remove_hud_waypoint
 
 --[[
@@ -600,14 +609,7 @@ end -- function distancer.remove_hud_waypoint
    ****************************************************************
 ]]--
 function distancer.check_hud_mapblock()
-    local on = false
-
-    if(distancer.hud_mapblock_label ~= nil and distancer.hud_mapblock_value ~= nil) then
-            on = true
-
-    end -- if(distancer.hud_mapblock_label
-
-    return on
+    return distancer.hud_mapblock_status
 
 end -- distancer.check_hud_mapblock
 
@@ -617,19 +619,8 @@ end -- distancer.check_hud_mapblock
    ****************************************************************
 ]]--
 function distancer.check_hud_measure()
-    local on = false
-
-    if(distancer.hud_distance_label ~= nil and
-        distancer.hud_marker ~= nil and
-        distancer.hud_position ~= nil and
-        distancer.hud_distance ~= nil)
-    then
-        on = true
-
-    end -- if(distancer.hud_mapblock_label
-
-    return on
-
+    return distancer.hud_measure_status
+    
 end -- distancer.check_hud_measure()
 
 --[[
@@ -638,14 +629,7 @@ end -- distancer.check_hud_measure()
    ****************************************************************
 ]]--
 function distancer.check_hud_waypoint()
-    local on = false
-
-    if(distancer.hud_waypoint_value ~= nil) then
-        on = true
-
-    end -- if(distancer.hud_waypoint_value
-
-    return on
+    return distancer.hud_waypoint_status
 
 end -- function distancer.check_hud_waypoint
 
