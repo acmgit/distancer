@@ -236,8 +236,10 @@ function distancer.safe_dead()
     distancer.print(distancer.green .. "Your Position of dead is set to the marker.")
 
     if(distancer.check_hud_waypoint()) then
-        distancer.set_hud_waypoint("off")
-        distancer.set_hud_waypoint("on")
+        local cmd = distancer.split("hud_waypoint off")
+        distancer.check(cmd)
+        cmd = distancer.split("hud_waypoint on")
+        distancer.check(cmd)
 
     end -- if(distancer.check_hud_waypoint
 
