@@ -52,8 +52,15 @@ GPL 3.0 by A.C.M.<br>
 
 ## depends
 nothing<br>
-
+<br>
 ## install 
 Move the folder to your clientmods directory of your minetest-folder.<br>
 Then activate the mod in your mods.conf.<br>
 Important: Not the mod.conf inside the mod!!<br>
+<br>
+## Documentation for Developer
+<br>
+api.md<br>
+<br>
+## Documentation as plain Text
+api.txt<br>
