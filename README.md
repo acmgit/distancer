@@ -64,4 +64,5 @@ Important: Not the mod.conf inside the mod!!<br>
 api.md<br>
 <br>
 ## Documentation as plain Text
+<br>
 api.txt<br>
