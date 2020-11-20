@@ -57,3 +57,10 @@ nothing<br>
 Move the folder to your clientmods directory of your minetest-folder.<br>
 Then activate the mod in your mods.conf.<br>
 Important: Not the mod.conf inside the mod!!<br>
+
+## Documentation for Developer
+<br>
+![API](api.md)
+<br>
+## Documentation as plain Text
+api.txt

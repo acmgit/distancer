@@ -1,0 +1,171 @@
+Distancer API
+
+''Add module:
+You can easy extend the distancer with a new module. Take the pattern of the file cmd_.lua, fill out the help and save it under a new name "cmd_mymodulename.lua".
+After then open the init.lua and add at the end of the code a line:
+dofile("cmd_mymodulename.lua")
+Now you have added a new Module, now you can fill out your module with your code.
+
+
+API of Distancer
+
+function distancer.add_hud_mapblock()
+Starts the hud to display the mapblock.
+
+function distancer.add_hud_measure()
+Starts the hud to display the distances.
+
+function distancer.add_hud_waypoint()
+Starts the hud to disply the waypoint.
+
+function distancer.calc_distance_pos(Table pos_1, Table pos_2)
+Returns the Distance as Table.
+
+function distancer.change_hud_position(Table screenposition)
+Changes the position of the hud. Pay attention, these are screen-coordinates.
+
+function distancer.check(String cmd)
+Checks if the command is valid and reports it in the chat.
+
+function distancer.check_hud_mapblock()
+Returns true or false, if the hud is en- or disabled.
+
+function distancer.check_hud_measure()
+Returns true or false, if the hud is en- or disabled.
+
+function distancer.check_hud_waypoint()
+Returns true or false, if the hud is en- or disabled.
+
+function distancer.convert(table pos)
+Converts the given position to #00.0
+
+function distancer.get_hud_position()
+Write's the current position from the hud in chat.
+
+function distancer.get_mapblock()
+Get's the number of the mapblock where you currently are.
+
+function distancer.hud_reset()
+Reset's the current position of the hud to default x = 0.9, y = 0.7
+
+function distancer.hud_set_speed(float speed)
+Set's the number of seconds between every update of the hud.
+A value of 0 will freeze the hud.
+
+function distancer.print(String text)
+Write's a Text in the Chat.
+You can insert colors to your text too.
+
+function distancer.refresh_hud_mapblock()
+Refreshs the hud. Turns it off and on.
+
+function distancer.refresh_hud_measure()
+Refreshs the hud. Turns it off and on.
+
+function distancer.refresh_hud_waypoint()
+Refreshs the hud. Turns it off and on.
+
+function distancer.register_help(Table entry)
+Registers your Helptext and add it to the helpsystem.
+
+function distancer.remove_hud_mapblock()
+Disables the hud for the mapblock. You can add it every time with distancer.add_hud_mapblock.
+
+function distancer.remove_hud_measure()
+Disables the hud for distances. You can add it every time with distancer.add_hud_measure.
+
+function distancer.remove_hud_waypoint()
+Disables the hud for waypoints. you can add it every time with distancer.add_hud_waypoint.
+
+function distancer.safe_dead()
+Function to safe the your last position of dead in the waypoint.
+If there is already a position, the function safe's the position in distancer.old_marker.
+
+function distancer.show_version()
+Prints the current version of distancer in the console.
+
+function distancer.update_hud()
+Updates the HUD of distancer.
+
+
+Tables of distancer
+
+Table position
+position.x = value
+position.y = value
+position.z = value
+
+Table help-entry
+help.Name = String. Name and command of the Module.
+help.Usage = String. Short description of the command only.
+help.Description = String. Description of the fully command.
+help.Parameter = String. Has the command parameter? no, then "", yes, insert your parameters.
+
+Table screenposition
+position.x = value
+position.y = value
+
+Colors of distancer
+
+Distancer has colors for the chat definied, which you can use for example:
+"This is a " .. distancer.green .. " green " .. distancer.white .. "Color."
+Following Colors are available:
+
+distancer.black
+distancer.blue
+distancer.green
+distancer.grey
+distancer.light_blue
+distancer.light_green
+distancer.light_red
+distancer.orange
+distancer.pink
+distancer.purple
+distancer.red
+distancer.yellow
+distancer.white
+
+
+The hud has the same colors definied, but:
+
+distancer.hud_color["black"]
+distancer.hud_color["blue"]
+distancer.hud_color["green"]
+distancer.hud_color["grey"]
+distancer.hud_color["lightblue"]
+distancer.hud_color["lightgreen"]
+distancer.hud_color["lightred"]
+distancer.hud_color["orange"]
+distancer.hud_color["pink"]
+distancer.hud_color["purple"]
+distancer.hud_color["red"]
+distancer.hud_color["yellow"]
+distancer.hud_color["white"]
+
+
+Variables of distancer:
+
+distancer.version
+Version of the distancer.
+
+distancer.revision
+Revision of the distancer.
+distancer.modname
+Name of the distancer.
+distancer.marker
+Waypoint of the distancer. NIL = no waypoint.
+
+distancer.old_marker
+Saved Waypoint. Used by distancer.safe_dead().
+
+distancer.speed
+Seconds to wait between every update.
+
+distancer.safe_dead_state
+True or False. True, the distancer stores the position of your dead automatically.
+
+
+Mod-Channels in distancer:
+Distancer is prepared to use mod-channels to communicate with other mods.
+But the this are a feature for future use.
+
