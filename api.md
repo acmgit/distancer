@@ -10,6 +10,7 @@ Now you have added a new Module, now you can fill out your module with your code
 
 ## API of Distancer
 <br>
+
 #### function distancer.add_hud_mapblock()
 Starts the hud to display the mapblock.<br>
 <br>
