@@ -90,23 +90,30 @@ Updates the HUD of distancer.<br>
 <br>
 ## Tables of distancer
 <br>
+
 ### Table position
 <br>
+
 position.x = value<br>
 position.y = value<br>
 position.z = value<br>
 <br>
+
 ### Table help-entry
 <br>
+
 help.Name = String. Name and command of the Module.<br>
 help.Usage = String. Short description of the command only.<br>
 help.Description = String. Description of the fully command.<br>
 help.Parameter = String. Has the command parameter? no, then "", yes, insert your parameters.<br>
 <br>
+
 ### Table screenposition
 <br>
+
 position.x = value<br>
 position.y = value<br>
+<br>
 
 ## Colors of distancer
 <br>
@@ -114,93 +121,269 @@ Distancer has colors for the chat definied, which you can use for example:<br>
 "This is a " .. distancer.green .. " green " .. distancer.white .. "Color."<br>
 Following Colors are available:
 <br>
+
 ### distancer.black
 <br>
+
 ### distancer.blue
 <br>
+
 ### distancer.green
 <br>
+
 ### distancer.grey
 <br>
+
 ### distancer.light_blue
 <br>
+
 ### distancer.light_green
 <br>
+
 ### distancer.light_red
 <br>
+
 ### distancer.orange
 <br>
+
 ### distancer.pink
 <br>
+
 ### distancer.purple
 <br>
+
 ### distancer.red
 <br>
+
 ### distancer.yellow
 <br>
+
+### distancer.blue
+<br>
+
+### distancer.green
+<br>
+
+### distancer.grey
+<br>
+
+### distancer.light_blue
+<br>
+
+### distancer.light_green
+<br>
+
+### distancer.light_red
+<br>
+
+### distancer.orange
+<br>
+
+### distancer.pink
+<br>
+
+### distancer.purple
+<br>
+
+### distancer.red
+<br>
+
+### distancer.yellow
+<br>
+
+### distancer.blue
+<br>
+
+### distancer.green
+<br>
+
+### distancer.grey
+<br>
+
+### distancer.light_blue
+<br>
+
+### distancer.light_green
+<br>
+
+### distancer.light_red
+<br>
+
+### distancer.orange
+<br>
+
+### distancer.pink
+<br>
+
+### distancer.purple
+<br>
+
+### distancer.red
+<br>
+
+### distancer.yellow
+<br>
+
 ### distancer.white
 <br>
 <br>
+
 ## The hud has the same colors definied, but:
 <br>
+
 ### distancer.hud_color["black"]
 <br>
+
 ### distancer.hud_color["blue"]
 <br>
+
 ### distancer.hud_color["green"]
 <br>
+
 ### distancer.hud_color["grey"]
 <br>
+
 ### distancer.hud_color["lightblue"]
 <br>
+
 ### distancer.hud_color["lightgreen"]
 <br>
+
 ### distancer.hud_color["lightred"]
 <br>
+
 ### distancer.hud_color["orange"]
 <br>
+
 ### distancer.hud_color["pink"]
 <br>
+
 ### distancer.hud_color["purple"]
 <br>
+
 ### distancer.hud_color["red"]
 <br>
+
 ### distancer.hud_color["yellow"]
 <br>
+
+### distancer.hud_color["blue"]
+<br>
+
+### distancer.hud_color["green"]
+<br>
+
+### distancer.hud_color["grey"]
+<br>
+
+### distancer.hud_color["lightblue"]
+<br>
+
+### distancer.hud_color["lightgreen"]
+<br>
+
+### distancer.hud_color["lightred"]
+<br>
+
+### distancer.hud_color["orange"]
+<br>
+
+### distancer.hud_color["pink"]
+<br>
+
+### distancer.hud_color["purple"]
+<br>
+
+### distancer.hud_color["red"]
+<br>
+
+### distancer.hud_color["yellow"]
+<br>
+
+### distancer.hud_color["blue"]
+<br>
+
+### distancer.hud_color["green"]
+<br>
+
+### distancer.hud_color["grey"]
+<br>
+
+### distancer.hud_color["lightblue"]
+<br>
+
+### distancer.hud_color["lightgreen"]
+<br>
+
+### distancer.hud_color["lightred"]
+<br>
+
+### distancer.hud_color["orange"]
+<br>
+
+### distancer.hud_color["pink"]
+<br>
+
+### distancer.hud_color["purple"]
+<br>
+
+### distancer.hud_color["red"]
+<br>
+
+### distancer.hud_color["yellow"]
+<br>
+
 ### distancer.hud_color["white"]
 <br>
+
 <br>
 ## Variables of distancer:
 <br>
+
 ### distancer.version
 <br>
+
 Version of the distancer.<br>
 <br>
+
 ### distancer.revision
 <br>
+
 Revision of the distancer.<br>
+
 ### distancer.modname
 <br>
+
 Name of the distancer.<br>
+
 ### distancer.marker
 <br>
+
 Waypoint of the distancer. NIL = no waypoint.<br>
 <br>
+
 ### distancer.old_marker
 <br>
+
 Saved Waypoint. Used by distancer.safe_dead().<br>
 <br>
+
 ### distancer.speed
 <br>
+
 Seconds to wait between every update.<br>
 <br>
+
 ### distancer.safe_dead_state
 <br>
+
 True or False. True, the distancer stores the position of your dead automatically.<br>
 <br>
 <br>
+
 ## Mod-Channels in distancer:
 <br>
+
 Distancer is prepared to use mod-channels to communicate with other mods.<br>
 But the this are a feature for future use.<br>
 <br>
