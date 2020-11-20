@@ -1,13 +1,13 @@
 Distancer API
 
-''Add module:
+
+Add module:
 You can easy extend the distancer with a new module. Take the pattern of the file cmd_.lua, fill out the help and save it under a new name "cmd_mymodulename.lua".
 After then open the init.lua and add at the end of the code a line:
 dofile("cmd_mymodulename.lua")
 Now you have added a new Module, now you can fill out your module with your code.
 
-
-API of Distancer
+API of Distancer:
 
 function distancer.add_hud_mapblock()
 Starts the hud to display the mapblock.
@@ -95,6 +95,7 @@ position.x = value
 position.y = value
 position.z = value
 
+
 Table help-entry
 help.Name = String. Name and command of the Module.
 help.Usage = String. Short description of the command only.
@@ -105,12 +106,16 @@ Table screenposition
 position.x = value
 position.y = value
 
-Colors of distancer
 
-Distancer has colors for the chat definied, which you can use for example:
-"This is a " .. distancer.green .. " green " .. distancer.white .. "Color."
+
+Colors of distancer:
+
+Distancer has colors for the chat definied, which you can use, for example:
+"This is a" .. distancer.green .. " green " .. distancer.white .. "Color."
 Following Colors are available:
 
+Color
+---------------------------------
 distancer.black
 distancer.blue
 distancer.green
@@ -125,9 +130,11 @@ distancer.red
 distancer.yellow
 distancer.white
 
-
 The hud has the same colors definied, but:
 
+
+HUD Color
+---------------------------------
 distancer.hud_color["black"]
 distancer.hud_color["blue"]
 distancer.hud_color["green"]
@@ -142,30 +149,37 @@ distancer.hud_color["red"]
 distancer.hud_color["yellow"]
 distancer.hud_color["white"]
 
-
 Variables of distancer:
 
-distancer.version
-Version of the distancer.
-
-distancer.revision
-Revision of the distancer.
-distancer.modname
-Name of the distancer.
 distancer.marker
+Position
 Waypoint of the distancer. NIL = no waypoint.
 
+distancer.modname
+String
+Name of the distancer.
+
 distancer.old_marker
+Postion
 Saved Waypoint. Used by distancer.safe_dead().
 
-distancer.speed
-Seconds to wait between every update.
+distancer.revision
+Integer
+Revision of the distancer.
 
 distancer.safe_dead_state
+Boolean
 True or False. True, the distancer stores the position of your dead automatically.
 
+distancer.speed
+Float
+Seconds to wait between every update.
+
+distancer.version
+Integer
+Version of the distancer.
 
 Mod-Channels in distancer:
+
 Distancer is prepared to use mod-channels to communicate with other mods.
 But the this are a feature for future use.
-

@@ -60,12 +60,8 @@ Important: Not the mod.conf inside the mod!!<br>
 <br>
 <br>
 ## Documentation for Developer
-<br>
-api.md<br>
-<br>
+[api.md](api.md)
 
 ## Documentation as plain Text
-
-<br>
-api.txt<br>
+[api.txt](api.txt)
 <br>
