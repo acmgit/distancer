@@ -6,7 +6,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["who"] = function()
+distancer.commands["who"] = function()
     local online = minetest.get_player_names()
     if(online == nil) then
         distancer.print(distancer.green .. "No Player is online?\n")

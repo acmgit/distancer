@@ -6,7 +6,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["mymodule"] = function()
+distancer.commands["mymodule"] = function()
 
 -- Here you can write your own code
 

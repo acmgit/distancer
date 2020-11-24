@@ -6,7 +6,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["restore_marker"] = function()
+distancer.commands["restore_marker"] = function()
     if(distancer.old_marker ~= nil) then
         distancer.marker = distancer.old_marker
         distancer.print(distancer.green .. "Old Markerposition restored.")

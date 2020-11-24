@@ -13,7 +13,7 @@ distancer.register_help({
                        )
 
 
-distancer["change_safe_dead"] = function(parameter)
+distancer.commands["change_safe_dead"] = function(parameter)
     if(parameter[2] == nil) then
         if(distancer.safe_dead_state) then
             distancer.print(distancer.green .. "The safe_dead_status of the Distancer is on.")

@@ -6,7 +6,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["show_mapblock"] = function()
+distancer.commands["show_mapblock"] = function()
     local pos_string = distancer.get_mapblock()
     if(pos_string ~= nil) then
         distancer.print(distancer.green .. "Current Mapblocknumber: (" .. distancer.orange .. pos_string ..

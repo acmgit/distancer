@@ -8,7 +8,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["hud_measure"] = function(parameter)
+distancer.commands["hud_measure"] = function(parameter)
     if(parameter[2] == "on") then
         if(not distancer.check_hud_measure()) then
             distancer.add_hud_measure()

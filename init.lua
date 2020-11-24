@@ -12,7 +12,7 @@ dst = {}
 distancer = {}
 
 distancer.version = 3
-distancer.revision = 1
+distancer.revision = 3
 distancer.modname = "Distancer"
 
 distancer.marker = nil
@@ -42,6 +42,7 @@ dst.mname = distancer.modname
 dst.channelname = "distancer"
 
 distancer.helpsystem = {}
+distancer.commands = {}
 
 distancer.hud_color = {
                         ["green"]        = 0x00FF00,
@@ -135,9 +136,9 @@ end -- function distancer.split
 function distancer.check(cmd)
 
         if(cmd ~= nil and cmd[1] ~= nil) then
-            if(distancer[cmd[1]] ~= nil) then
+            if(distancer.commands[cmd[1]] ~= nil) then
                 -- Command is valid, execute it with parameter
-                distancer[cmd[1]](cmd)
+                distancer.commands[cmd[1]](cmd)
 
             else -- A command is given, but
             -- Command not found, report it.
@@ -146,17 +147,17 @@ function distancer.check(cmd)
                                     distancer.orange .. cmd[1] .. distancer.red .. "\".")
 
                 else
-                    if(distancer["help"]) then
-                        distancer["help"]()
+                    if(distancer.commands["help"]) then
+                        distancer.commands["help"]()
 
                     else
                         distancer.print(distancer.red .. "Unknown Command. No helpsystem available.")
 
-                    end --if(distancer["help"]
+                    end --if(distancer.commands["help"]
 
                 end -- if(cmd[1]
 
-            end -- if(distancer[cmd[1
+            end -- if(distancer.commands[cmd[1
 
         else
             distancer.print(distancer.red .. "No Command for Distancer given.")
@@ -642,8 +643,8 @@ end -- function distancer.check_hud_waypoint
 ]]--
 function distancer.refresh_hud_mapblock()
     if(distancer.check_hud_mapblock()) then
-            distancer["hud_mapblock"]({"hud_mapblock","off"})
-            distancer["hud_mapblock"]({"hud_mapblock","on"})
+            distancer.commands["hud_mapblock"]({"hud_mapblock","off"})
+            distancer.commands["hud_mapblock"]({"hud_mapblock","on"})
 
     end -- if(distancer.check_hud_mapblock()
 
@@ -656,8 +657,8 @@ end -- distancer.change_hud_mapblock()
 ]]--
 function distancer.refresh_hud_measure()
     if(distancer.check_hud_measure()) then
-            distancer["hud_measure"]({"hud_measure", "off"})
-            distancer["hud_measure"]({"hud_measure", "on"})
+            distancer.commands["hud_measure"]({"hud_measure", "off"})
+            distancer.commands["hud_measure"]({"hud_measure", "on"})
 
     end -- if(distancer.check_hud_measure()
 
@@ -670,8 +671,8 @@ end -- distancer.change_hud_measure()
 ]]--
 function distancer.refresh_hud_waypoint()
     if(distancer.check_hud_waypoint()) then
-            distancer["hud_waypoint"]({"hud_waypoint", "off"})
-            distancer["hud_waypoint"]({"hud_waypoint", "on"})
+            distancer.commands["hud_waypoint"]({"hud_waypoint", "off"})
+            distancer.commands["hud_waypoint"]({"hud_waypoint", "on"})
             --distancer.set_hud_waypoint("off")
             --distancer.set_hud_waypoint("on")
 

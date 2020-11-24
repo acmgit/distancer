@@ -20,7 +20,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["mark"] = function(parameter)
+distancer.commands["mark"] = function(parameter)
         --local command = distancer.split(parameter)
         local current_position = minetest.localplayer:get_pos()
 

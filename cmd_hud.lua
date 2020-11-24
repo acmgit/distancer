@@ -11,29 +11,29 @@ distancer.register_help({
                        )
 
 
-distancer["hud"] = function(parameter)
+distancer.commands["hud"] = function(parameter)
 
     if(parameter[2] == "" or parameter[2] == nil) then
-        distancer.print(distancer.red .. "Wrong or no Parameter for .dis hud\n")
+        distancer.print(distancer.red .. "No Parameter for .dis hud\n")
         distancer.print(distancer.orange .. "Usage: .dis hud on|off")
 
     else
         local hud_typ = false
         
-        if(distancer["hud_mapblock"]) then
-            distancer["hud_mapblock"]({"hud_mapblock", parameter[2]})
+        if(distancer.commands["hud_mapblock"]) then
+            distancer.commands["hud_mapblock"]({"hud_mapblock", parameter[2]})
             hud_typ = true
             
         end -- if(distancer["hud_mapblock
 
-        if(distancer["hud_measure"]) then
-            distancer["hud_measure"]({"hud_measure", parameter[2]})
+        if(distancer.commands["hud_measure"]) then
+            distancer.commands["hud_measure"]({"hud_measure", parameter[2]})
             hud_typ = true
             
         end -- if(distancer["hud_measure
 
-        if(distancer["hud_waypoint"]) then
-            distancer["hud_waypoint"]({"hud_waypoint", parameter[2]})
+        if(distancer.commands["hud_waypoint"]) then
+            distancer.commands["hud_waypoint"]({"hud_waypoint", parameter[2]})
             hud_typ = true
             
         end --if(distancer["hud_waypoint

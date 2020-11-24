@@ -10,7 +10,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["hud_speed"] = function(parameter)
+distancer.commands["hud_speed"] = function(parameter)
         if(parameter[2] == nil or parameter[2] == "") then
             if(distancer.speed > 0) then
                 distancer.print(distancer.green .. "The HUD of Distancer will update every " ..

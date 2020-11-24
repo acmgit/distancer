@@ -8,7 +8,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["hud_mapblock"] = function(parameter)
+distancer.commands["hud_mapblock"] = function(parameter)
     if(parameter[2] == "on") then
         if(not distancer.check_hud_mapblock()) then
             distancer.add_hud_mapblock()

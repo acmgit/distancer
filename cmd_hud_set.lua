@@ -12,7 +12,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["hud_set"] = function(parameter)
+distancer.commands["hud_set"] = function(parameter)
     if(parameter[2] == nil or parameter[2] == "") then
         distancer.get_hud_position()
 

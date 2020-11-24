@@ -8,7 +8,7 @@ distancer.register_help({
                         }
                        )
 
-distancer["hud_waypoint"] = function(parameter)
+distancer.commands["hud_waypoint"] = function(parameter)
     if(parameter[2] == "on") then
         if(not distancer.check_hud_waypoint()) then
             if(distancer.marker == nil) then
